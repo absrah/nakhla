@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "289955515268",
+    "project_id": "nakhla-4cd53",
+    "storage_bucket": "nakhla-4cd53.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:289955515268:android:b625f90cb10a42fbddabd1",
+        "android_client_info": {
+          "package_name": "com.abdulrahman.nakhla"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBu__-GKqV8dUHsloDWQ_lXxcwBnF9T6sU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
