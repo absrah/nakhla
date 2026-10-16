@@ -27,7 +27,7 @@ class AuthRepository {
 
   User? get currentUser => _auth.currentUser;
 
-  Future<void> signIn({
+  Future<void> logIn({
     required String email,
     required String password,
   }) async {

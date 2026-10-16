@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,16 +8,17 @@ import '../../../core/utils/validators.dart';
 import '../../../core/widgets/app_text_field.dart';
 import '../../../core/widgets/error_banner.dart';
 import '../../../core/widgets/loading_button.dart';
-import '../view_model/sign_in_view_model.dart';
+import '../view_model/log_in_view_model.dart';
+import 'sign_up_screen.dart';
 
-class SignInScreen extends ConsumerStatefulWidget {
-  const SignInScreen({super.key});
+class LogInScreen extends ConsumerStatefulWidget {
+  const LogInScreen({super.key});
 
   @override
-  ConsumerState<SignInScreen> createState() => _SignInScreenState();
+  ConsumerState<LogInScreen> createState() => _LogInScreenState();
 }
 
-class _SignInScreenState extends ConsumerState<SignInScreen> {
+class _LogInScreenState extends ConsumerState<LogInScreen> {
   final _formKey = GlobalKey<FormState>();
   final _email = TextEditingController();
   final _password = TextEditingController();
@@ -31,7 +33,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
   void _submit() {
     if (!_formKey.currentState!.validate()) return;
     FocusScope.of(context).unfocus();
-    ref.read(signInViewModelProvider.notifier).signIn(
+    ref.read(logInViewModelProvider.notifier).logIn(
           email: _email.text,
           password: _password.text,
         );
@@ -39,7 +41,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(signInViewModelProvider);
+    final state = ref.watch(logInViewModelProvider);
     final p = context.palette;
     final text = Theme.of(context).textTheme;
 
@@ -124,8 +126,12 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                   ),
                   SizedBox(height: 12.h),
                   OutlinedButton(
-                    // TODO: opens the create-account screen (router step).
-                    onPressed: () {},
+                    // TEMPORARY navigation until the router is added.
+                    onPressed: () => Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (_) => const SignUpScreen(),
+                      ),
+                    ),
                     child: const Text('Sign up'),
                   ),
                   SizedBox(height: 24.h),

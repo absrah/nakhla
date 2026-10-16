@@ -4,17 +4,17 @@ import '../../../core/errors/app_exception.dart';
 import '../model/auth_repository.dart';
 import 'auth_action_state.dart';
 
-class SignInViewModel extends Notifier<AuthActionState> {
+class logInViewModel extends Notifier<AuthActionState> {
   @override
   AuthActionState build() => const AuthActionState();
 
-  Future<void> signIn({required String email, required String password}) async {
+  Future<void> logIn({required String email, required String password}) async {
     if (state.isLoading) return;
     state = const AuthActionState(isLoading: true);
     try {
       await ref
           .read(authRepositoryProvider)
-          .signIn(email: email, password: password);
+          .logIn(email: email, password: password);
       if (!ref.mounted) return;
       state = const AuthActionState(done: true);
     } on AppException catch (e) {
@@ -24,7 +24,7 @@ class SignInViewModel extends Notifier<AuthActionState> {
   }
 }
 
-final signInViewModelProvider =
-    NotifierProvider.autoDispose<SignInViewModel, AuthActionState>(
-  SignInViewModel.new,
+final logInViewModelProvider =
+    NotifierProvider.autoDispose<logInViewModel, AuthActionState>(
+  logInViewModel.new,
 );

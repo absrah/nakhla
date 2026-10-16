@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'core/theme/app_palette.dart';
 import 'core/theme/app_theme.dart';
 import 'features/auth/model/auth_repository.dart';
-import 'features/auth/view/sign_in_screen.dart';
+import 'features/auth/view/Log_in_screen.dart';
 import 'features/auth/view_model/session_provider.dart';
 
 /// TEMPORARY: lets us flip light/dark while testing the theme.
@@ -50,8 +50,8 @@ class _TempGate extends ConsumerWidget {
       ),
       error: (e, _) => Scaffold(body: Center(child: Text('$e'))),
       data: (user) => user == null
-          ? const SignInScreen()
-          : _SignedInPlaceholder(
+          ? const LogInScreen()
+          : _LoggedInPlaceholder(
               name: user.displayName ?? '',
               email: user.email ?? '',
               uid: user.uid,
@@ -61,8 +61,8 @@ class _TempGate extends ConsumerWidget {
 }
 
 /// TEMPORARY: proves the session works. Replaced by the real home screen.
-class _SignedInPlaceholder extends ConsumerWidget {
-  const _SignedInPlaceholder({
+class _LoggedInPlaceholder extends ConsumerWidget {
+  const _LoggedInPlaceholder({
     required this.name,
     required this.email,
     required this.uid,
@@ -79,7 +79,7 @@ class _SignedInPlaceholder extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Signed in'),
+        title: const Text('Logged in'),
         actions: [
           IconButton(
             tooltip: 'Switch light / dark',
@@ -102,7 +102,7 @@ class _SignedInPlaceholder extends ConsumerWidget {
             const Spacer(),
             OutlinedButton(
               onPressed: () => ref.read(authRepositoryProvider).signOut(),
-              child: const Text('Sign out'),
+              child: const Text('Log out'),
             ),
           ],
         ),
