@@ -8,6 +8,8 @@ import '../../../core/widgets/app_text_field.dart';
 import '../../../core/widgets/error_banner.dart';
 import '../../../core/widgets/loading_button.dart';
 import '../view_model/sign_up_view_model.dart';
+import 'package:go_router/go_router.dart';      // with the other package: imports
+import '../../../core/router/app_routes.dart';  // with the other relative imports
 
 class SignUpScreen extends ConsumerStatefulWidget {
   const SignUpScreen({super.key});
@@ -51,11 +53,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
     final p = context.palette;
     final text = Theme.of(context).textTheme;
 
-    // TEMPORARY: close this screen once the account exists, so the gate
-    // underneath (now signed in) shows. The router will do this later.
-    ref.listen(signUpViewModelProvider, (previous, next) {
-      if (next.done) Navigator.of(context).pop();
-    });
+
 
     return Scaffold(
       appBar: AppBar(title: const Text('Create account')),
@@ -142,7 +140,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                   ),
                   SizedBox(height: 8.h),
                   TextButton(
-                    onPressed: () => Navigator.of(context).pop(),
+                  onPressed: () => context.go(AppRoutes.login),
                     child: const Text('Already have an account? Log in'),
                   ),
                   SizedBox(height: 24.h),

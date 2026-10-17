@@ -48,14 +48,17 @@ class _AppTextFieldState extends State<AppTextField> {
       decoration: InputDecoration(
         labelText: widget.label,
         suffixIcon: widget.isPassword
-            ? IconButton(
-                tooltip: _hidden ? 'Show password' : 'Hide password',
-                icon: Icon(
-                  _hidden
-                      ? Icons.visibility_outlined
-                      : Icons.visibility_off_outlined,
+            ? ExcludeFocus(
+                // Keeps the Enter key moving to the next field, not the eye.
+                child: IconButton(
+                  tooltip: _hidden ? 'Show password' : 'Hide password',
+                  icon: Icon(
+                    _hidden
+                        ? Icons.visibility_outlined
+                        : Icons.visibility_off_outlined,
+                  ),
+                  onPressed: () => setState(() => _hidden = !_hidden),
                 ),
-                onPressed: () => setState(() => _hidden = !_hidden),
               )
             : null,
       ),
