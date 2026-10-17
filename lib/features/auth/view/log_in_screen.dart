@@ -131,6 +131,11 @@ class _LogInScreenState extends ConsumerState<LogInScreen> {
                   onPressed: () => context.push(AppRoutes.signUp),
                     child: const Text('Sign up'),
                   ),
+                  SizedBox(height: 8.h),
+                  TextButton(
+                    onPressed: () => context.go(AppRoutes.home),
+                    child: const Text('Continue as guest'),
+                  ),
                   SizedBox(height: 24.h),
                 ],
               ),

@@ -6,7 +6,10 @@ import '../../features/auth/view/forgot_password_screen.dart';
 import '../../features/auth/view/log_in_screen.dart';
 import '../../features/auth/view/sign_up_screen.dart';
 import '../../features/auth/view_model/session_provider.dart';
+import '../../features/cart/view/cart_screen.dart';
 import '../../features/home/view/home_screen.dart';
+import '../../features/onboarding/view/onboarding_screen.dart';
+import '../../features/onboarding/view_model/onboarding_view_model.dart';
 import '../../features/splash/view/splash_screen.dart';
 import 'app_routes.dart';
 
@@ -17,10 +20,21 @@ const _authPages = {
   AppRoutes.forgotPassword,
 };
 
-/// Screens that need a logged-in user. Grows as we add cart, orders...
+/// Screens that need a logged-in user. Guests are sent to log in first and
+/// come back afterwards. Grows as we add orders, wishlist, account...
 const _needsLogin = {
-  AppRoutes.home,
+  AppRoutes.cart,
 };
+
+/// Where to go after logging in: the screen the guest was trying to open.
+String? _returnTo(GoRouterState state) {
+  final from = state.uri.queryParameters['from'];
+  if (from == null || !from.startsWith('/') || from.startsWith('//')) {
+    return null;
+  }
+  if (from == AppRoutes.splash || _authPages.contains(from)) return null;
+  return from;
+}
 
 final routerProvider = Provider<GoRouter>((ref) {
   // The router re-checks its redirect whenever the session changes.
@@ -40,24 +54,33 @@ final routerProvider = Provider<GoRouter>((ref) {
       }
 
       final loggedIn = auth.value != null;
-      final onSplash = location == AppRoutes.splash;
 
       if (loggedIn) {
         // No reason to see log in / sign up while logged in.
-        return onSplash || _authPages.contains(location)
-            ? AppRoutes.home
-            : null;
+        if (_authPages.contains(location)) {
+          return _returnTo(state) ?? AppRoutes.home;
+        }
+        return location == AppRoutes.splash ? AppRoutes.home : null;
       }
 
       // Guest.
-      return onSplash || _needsLogin.contains(location)
-          ? AppRoutes.login
-          : null;
+      if (location == AppRoutes.splash) {
+        final seen = ref.read(onboardingSeenProvider);
+        return seen ? AppRoutes.home : AppRoutes.onboarding;
+      }
+      if (_needsLogin.contains(location)) {
+        return '${AppRoutes.login}?from=${Uri.encodeComponent(location)}';
+      }
+      return null;
     },
     routes: [
       GoRoute(
         path: AppRoutes.splash,
         builder: (context, state) => const SplashScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.onboarding,
+        builder: (context, state) => const OnboardingScreen(),
       ),
       GoRoute(
         path: AppRoutes.login,
@@ -74,6 +97,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.home,
         builder: (context, state) => const HomeScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.cart,
+        builder: (context, state) => const CartScreen(),
       ),
     ],
   );

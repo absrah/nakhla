@@ -1,3 +1,4 @@
+import 'dart:ui' show PointerDeviceKind;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -27,8 +28,21 @@ class NakhlaApp extends ConsumerWidget {
           darkTheme: AppTheme.dark,
           themeMode: mode,
           routerConfig: router,
+          scrollBehavior: const _AppScrollBehavior(),
         ),
       ),
     );
   }
+}
+
+/// Lets a mouse drag swipe pages and lists (Chrome / desktop testing).
+/// Phones are unaffected; they already use touch.
+class _AppScrollBehavior extends MaterialScrollBehavior {
+  const _AppScrollBehavior();
+
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+        ...super.dragDevices,
+        PointerDeviceKind.mouse,
+      };
 }
