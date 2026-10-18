@@ -16,6 +16,9 @@ import '../../features/splash/view/splash_screen.dart';
 import '../../features/wishlist/view/wishlist_screen.dart';
 import '../widgets/main_shell.dart';
 import 'app_routes.dart';
+import '../../features/catalog/view/product_detail_screen.dart';
+import '../../features/catalog/view/product_list_screen.dart';
+import '../../features/catalog/view/search_screen.dart';
 
 /// Screens that only make sense when you are NOT logged in.
 const _authPages = {
@@ -99,6 +102,28 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.forgotPassword,
         builder: (context, state) => const ForgotPasswordScreen(),
+      ),
+
+      // Opened on top of the tabs, so the bottom bar is hidden.
+      GoRoute(
+        path: AppRoutes.search,
+        builder: (context, state) => const SearchScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.deals,
+        builder: (context, state) => const ProductListScreen(dealsOnly: true),
+      ),
+      GoRoute(
+        path: AppRoutes.category,
+        builder: (context, state) => ProductListScreen(
+          categoryId: state.pathParameters['id'],
+          subcategoryId: state.uri.queryParameters['type'],
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.product,
+        builder: (context, state) =>
+            ProductDetailScreen(productId: state.pathParameters['id']!),
       ),
 
       // The five tabs. Each tab keeps its own screen and scroll position

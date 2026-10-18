@@ -1,0 +1,111 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../../../core/router/app_routes.dart';
+import '../../../../core/theme/app_palette.dart';
+import '../../../../core/utils/formatters.dart';
+import '../../model/product.dart';
+import 'product_image.dart';
+
+/// Product card for the 2-column grids: image, name, rating, price and the
+/// lime "Add to cart" button. Tapping the card opens the product.
+class ProductCard extends StatelessWidget {
+  const ProductCard({super.key, required this.product});
+
+  final Product product;
+
+  /// Height of everything under the image. The grid adds it to the card width.
+  static double get belowImage => 156.w;
+
+  void _addToCart(BuildContext context) {
+    // TEMPORARY until the cart step.
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(const SnackBar(content: Text('Cart comes in the cart step')));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final p = context.palette;
+    final text = Theme.of(context).textTheme;
+
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () => context.push(AppRoutes.productPath(product.id)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ProductImage(product: product),
+          SizedBox(height: 8.w),
+          SizedBox(
+            height: 40.w,
+            child: Text(
+              product.name,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: text.bodyMedium?.copyWith(
+                fontSize: 15.sp,
+                fontWeight: FontWeight.w500,
+                height: 1.3,
+              ),
+            ),
+          ),
+          SizedBox(height: 4.w),
+          Row(
+            children: [
+              Icon(Icons.star_rounded, size: 16.w, color: p.sale),
+              SizedBox(width: 4.w),
+              Text(
+                product.rating.toStringAsFixed(1),
+                style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w700),
+              ),
+              SizedBox(width: 4.w),
+              Text(
+                '(${formatCount(product.reviewCount)})',
+                style: TextStyle(fontSize: 13.sp, color: p.muted),
+              ),
+            ],
+          ),
+          SizedBox(height: 4.w),
+          Wrap(
+            crossAxisAlignment: WrapCrossAlignment.end,
+            spacing: 8.w,
+            children: [
+              Text(
+                formatSar(product.price),
+                style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w700),
+              ),
+              if (product.hasDiscount)
+                Text(
+                  formatSar(product.oldPrice!),
+                  style: TextStyle(
+                    fontSize: 12.sp,
+                    color: p.muted,
+                    decoration: TextDecoration.lineThrough,
+                  ),
+                ),
+            ],
+          ),
+          SizedBox(height: 8.w),
+          SizedBox(
+            height: 44.w,
+            width: double.infinity,
+            child: FilledButton.icon(
+              onPressed: () => _addToCart(context),
+              icon: Icon(Icons.add, size: 18.w),
+              label: Text('Add to cart', style: TextStyle(fontSize: 15.sp)),
+              style: FilledButton.styleFrom(
+                minimumSize: Size.zero,
+                padding: EdgeInsets.zero,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(14.r),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

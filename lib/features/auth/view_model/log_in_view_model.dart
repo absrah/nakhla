@@ -4,7 +4,7 @@ import '../../../core/errors/app_exception.dart';
 import '../model/auth_repository.dart';
 import 'auth_action_state.dart';
 
-class logInViewModel extends Notifier<AuthActionState> {
+class LogInViewModel extends Notifier<AuthActionState> {
   @override
   AuthActionState build() => const AuthActionState();
 
@@ -25,6 +25,6 @@ class logInViewModel extends Notifier<AuthActionState> {
 }
 
 final logInViewModelProvider =
-    NotifierProvider.autoDispose<logInViewModel, AuthActionState>(
-  logInViewModel.new,
+    NotifierProvider.autoDispose<LogInViewModel, AuthActionState>(
+  LogInViewModel.new,
 );
