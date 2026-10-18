@@ -2,15 +2,19 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/account/view/account_screen.dart';
 import '../../features/auth/view/forgot_password_screen.dart';
 import '../../features/auth/view/log_in_screen.dart';
 import '../../features/auth/view/sign_up_screen.dart';
 import '../../features/auth/view_model/session_provider.dart';
 import '../../features/cart/view/cart_screen.dart';
+import '../../features/catalog/view/categories_screen.dart';
 import '../../features/home/view/home_screen.dart';
 import '../../features/onboarding/view/onboarding_screen.dart';
 import '../../features/onboarding/view_model/onboarding_view_model.dart';
 import '../../features/splash/view/splash_screen.dart';
+import '../../features/wishlist/view/wishlist_screen.dart';
+import '../widgets/main_shell.dart';
 import 'app_routes.dart';
 
 /// Screens that only make sense when you are NOT logged in.
@@ -21,9 +25,11 @@ const _authPages = {
 };
 
 /// Screens that need a logged-in user. Guests are sent to log in first and
-/// come back afterwards. Grows as we add orders, wishlist, account...
+/// come back afterwards. Grows as we add orders, checkout...
 const _needsLogin = {
   AppRoutes.cart,
+  AppRoutes.wishlist,
+  AppRoutes.account,
 };
 
 /// Where to go after logging in: the screen the guest was trying to open.
@@ -94,13 +100,44 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.forgotPassword,
         builder: (context, state) => const ForgotPasswordScreen(),
       ),
-      GoRoute(
-        path: AppRoutes.home,
-        builder: (context, state) => const HomeScreen(),
-      ),
-      GoRoute(
-        path: AppRoutes.cart,
-        builder: (context, state) => const CartScreen(),
+
+      // The five tabs. Each tab keeps its own screen and scroll position
+      // while you look at another tab.
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) =>
+            MainShell(navigationShell: navigationShell),
+        branches: [
+          StatefulShellBranch(routes: [
+            GoRoute(
+              path: AppRoutes.home,
+              builder: (context, state) => const HomeScreen(),
+            ),
+          ]),
+          StatefulShellBranch(routes: [
+            GoRoute(
+              path: AppRoutes.categories,
+              builder: (context, state) => const CategoriesScreen(),
+            ),
+          ]),
+          StatefulShellBranch(routes: [
+            GoRoute(
+              path: AppRoutes.cart,
+              builder: (context, state) => const CartScreen(),
+            ),
+          ]),
+          StatefulShellBranch(routes: [
+            GoRoute(
+              path: AppRoutes.wishlist,
+              builder: (context, state) => const WishlistScreen(),
+            ),
+          ]),
+          StatefulShellBranch(routes: [
+            GoRoute(
+              path: AppRoutes.account,
+              builder: (context, state) => const AccountScreen(),
+            ),
+          ]),
+        ],
       ),
     ],
   );

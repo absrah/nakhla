@@ -11,6 +11,7 @@ import '../../auth/view_model/session_provider.dart';
 import '../../onboarding/view_model/onboarding_view_model.dart';
 import '../../../core/errors/app_exception.dart';
 import '../../catalog/model/catalog_seeder.dart';
+import '../../catalog/view_model/catalog_providers.dart';
 
 /// TEMPORARY placeholder for testing guest vs logged-in behavior.
 /// Replaced by the real Home screen in Phase 2.
@@ -19,6 +20,8 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final categories = ref.watch(categoriesProvider);
+    final products = ref.watch(productsProvider);
     final user = ref.watch(authStateProvider).value;
     final isGuest = user == null;
     final p = context.palette;
@@ -69,6 +72,17 @@ class HomeScreen extends ConsumerWidget {
               child: const Text('Show intro again (testing)'),
             ),
             const Spacer(),
+
+                        Text(categories.when(
+              data: (c) => '${c.length} categories',
+              loading: () => 'Loading categories...',
+              error: (e, _) => 'Error: $e',
+            )),
+            Text(products.when(
+              data: (p) => '${p.length} products',
+              loading: () => 'Loading products...',
+              error: (e, _) => 'Error: $e',
+            )),
                         if (!isGuest)
               TextButton(
                 onPressed: () async {
