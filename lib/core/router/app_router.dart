@@ -35,6 +35,11 @@ const _needsLogin = {
   AppRoutes.account,
 };
 
+/// True for a protected screen or any page inside it (/account/orders...).
+bool _isProtected(String location) => _needsLogin.any(
+      (path) => location == path || location.startsWith('$path/'),
+    );
+
 /// Where to go after logging in: the screen the guest was trying to open.
 String? _returnTo(GoRouterState state) {
   final from = state.uri.queryParameters['from'];
@@ -77,7 +82,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         final seen = ref.read(onboardingSeenProvider);
         return seen ? AppRoutes.home : AppRoutes.onboarding;
       }
-      if (_needsLogin.contains(location)) {
+      if (_isProtected(location)) {
         return '${AppRoutes.login}?from=${Uri.encodeComponent(location)}';
       }
       return null;

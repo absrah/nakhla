@@ -20,6 +20,11 @@ class LogInViewModel extends Notifier<AuthActionState> {
     } on AppException catch (e) {
       if (!ref.mounted) return;
       state = AuthActionState(error: e.message);
+    } catch (_) {
+      if (!ref.mounted) return;
+      state = const AuthActionState(
+        error: 'Something went wrong. Please try again.',
+      );
     }
   }
 }
