@@ -1,0 +1,302 @@
+import 'category.dart';
+import 'product.dart';
+
+/// Sample catalog written to Firestore once by the dev seeder.
+/// Brands and products are invented. Safe to run again: same ids overwrite.
+
+List<String> _keywords(String name, String nameAr, String brand) {
+  final words = <String>{};
+  for (final part in '$name $brand'.toLowerCase().split(RegExp(r'[^a-z0-9]+'))) {
+    if (part.length >= 2) words.add(part);
+  }
+  for (final part in nameAr.split(RegExp(r'\s+'))) {
+    if (part.length >= 2) words.add(part);
+  }
+  return words.toList();
+}
+
+Product _p(
+  String id,
+  String categoryId,
+  String subcategoryId,
+  String name,
+  String nameAr,
+  String brand,
+  double price,
+  double? oldPrice,
+  double rating,
+  int reviewCount,
+  int stock,
+  String description,
+  String descriptionAr,
+) {
+  return Product(
+    id: id,
+    name: name,
+    nameAr: nameAr,
+    brand: brand,
+    categoryId: categoryId,
+    subcategoryId: subcategoryId,
+    price: price,
+    oldPrice: oldPrice,
+    rating: rating,
+    reviewCount: reviewCount,
+    stock: stock,
+    description: description,
+    descriptionAr: descriptionAr,
+    keywords: _keywords(name, nameAr, brand),
+  );
+}
+
+const seedCategories = [
+  Category(
+    id: 'electronics',
+    name: 'Electronics',
+    nameAr: 'إلكترونيات',
+    order: 1,
+    subcategories: [
+      Subcategory('phones', 'Phones', 'هواتف'),
+      Subcategory('laptops', 'Laptops', 'لابتوبات'),
+      Subcategory('audio', 'Audio', 'صوتيات'),
+      Subcategory('cameras', 'Cameras', 'كاميرات'),
+      Subcategory('wearables', 'Wearables', 'أجهزة قابلة للارتداء'),
+      Subcategory('gaming', 'Gaming', 'ألعاب فيديو'),
+      Subcategory('tablets', 'Tablets', 'أجهزة لوحية'),
+      Subcategory('smart-home', 'Smart home', 'المنزل الذكي'),
+      Subcategory('accessories', 'Accessories', 'إكسسوارات'),
+    ],
+  ),
+  Category(
+    id: 'fashion',
+    name: 'Fashion',
+    nameAr: 'أزياء',
+    order: 2,
+    subcategories: [
+      Subcategory('men', 'Men', 'رجالي'),
+      Subcategory('women', 'Women', 'نسائي'),
+      Subcategory('shoes', 'Shoes', 'أحذية'),
+      Subcategory('bags', 'Bags', 'حقائب'),
+      Subcategory('watches', 'Watches', 'ساعات'),
+    ],
+  ),
+  Category(
+    id: 'home-kitchen',
+    name: 'Home & Kitchen',
+    nameAr: 'المنزل والمطبخ',
+    order: 3,
+    subcategories: [
+      Subcategory('kitchen', 'Kitchen', 'مطبخ'),
+      Subcategory('furniture', 'Furniture', 'أثاث'),
+      Subcategory('decor', 'Decor', 'ديكور'),
+      Subcategory('bedding', 'Bedding', 'مفروشات'),
+      Subcategory('cleaning', 'Cleaning', 'تنظيف'),
+    ],
+  ),
+  Category(
+    id: 'beauty',
+    name: 'Beauty',
+    nameAr: 'الجمال',
+    order: 4,
+    subcategories: [
+      Subcategory('skincare', 'Skincare', 'العناية بالبشرة'),
+      Subcategory('makeup', 'Makeup', 'مكياج'),
+      Subcategory('fragrance', 'Fragrance', 'عطور'),
+      Subcategory('hair', 'Hair care', 'العناية بالشعر'),
+    ],
+  ),
+  Category(
+    id: 'sports',
+    name: 'Sports',
+    nameAr: 'رياضة',
+    order: 5,
+    subcategories: [
+      Subcategory('fitness', 'Fitness', 'لياقة'),
+      Subcategory('outdoor', 'Outdoor', 'رحلات'),
+      Subcategory('cycling', 'Cycling', 'دراجات'),
+    ],
+  ),
+  Category(
+    id: 'toys-kids',
+    name: 'Toys & Kids',
+    nameAr: 'ألعاب وأطفال',
+    order: 6,
+    subcategories: [
+      Subcategory('toys', 'Toys', 'ألعاب'),
+      Subcategory('baby', 'Baby', 'مستلزمات الأطفال'),
+      Subcategory('board-games', 'Board games', 'ألعاب لوحية'),
+    ],
+  ),
+  Category(
+    id: 'grocery',
+    name: 'Grocery',
+    nameAr: 'بقالة',
+    order: 7,
+    subcategories: [
+      Subcategory('coffee', 'Coffee & tea', 'قهوة وشاي'),
+      Subcategory('snacks', 'Snacks', 'وجبات خفيفة'),
+      Subcategory('pantry', 'Pantry', 'المؤن'),
+    ],
+  ),
+  Category(
+    id: 'books',
+    name: 'Books',
+    nameAr: 'كتب',
+    order: 8,
+    subcategories: [
+      Subcategory('fiction', 'Fiction', 'روايات'),
+      Subcategory('business', 'Business', 'أعمال'),
+      Subcategory('kids-books', 'Kids', 'كتب أطفال'),
+    ],
+  ),
+  Category(
+    id: 'automotive',
+    name: 'Automotive',
+    nameAr: 'سيارات',
+    order: 9,
+    subcategories: [
+      Subcategory('car-care', 'Car care', 'العناية بالسيارة'),
+      Subcategory('car-accessories', 'Accessories', 'إكسسوارات'),
+      Subcategory('tools', 'Tools', 'أدوات'),
+    ],
+  ),
+];
+
+final seedProducts = <Product>[
+  // Electronics
+  _p('wireless-noise-cancelling-headphones', 'electronics', 'audio',
+      'Wireless Noise-Cancelling Headphones', 'سماعات لاسلكية بخاصية عزل الضوضاء',
+      'Auralyn', 349, 469, 4.7, 2184, 40,
+      'Over-ear headphones with active noise cancelling, 30 hours of battery and a soft carry case.',
+      'سماعات فوق الأذن بخاصية عزل الضوضاء النشط وبطارية تدوم 30 ساعة مع حقيبة حمل ناعمة.'),
+  _p('smartphone-128gb', 'electronics', 'phones',
+      'Smartphone 128GB', 'هاتف ذكي 128 جيجا',
+      'Voltix', 1499, null, 4.5, 932, 25,
+      '6.5 inch display, dual camera and all-day battery. Comes with a fast charger.',
+      'شاشة 6.5 بوصة وكاميرا مزدوجة وبطارية تدوم طوال اليوم. يأتي مع شاحن سريع.'),
+  _p('ultrabook-laptop-14', 'electronics', 'laptops',
+      'Ultrabook Laptop 14 inch', 'لابتوب نحيف 14 بوصة',
+      'Nordbyte', 3299, 3799, 4.6, 411, 12,
+      'Light and fast laptop with a 14 inch screen, 16GB memory and 512GB storage.',
+      'لابتوب خفيف وسريع بشاشة 14 بوصة وذاكرة 16 جيجا وتخزين 512 جيجا.'),
+  _p('fitness-smartwatch', 'electronics', 'wearables',
+      'Fitness Smartwatch', 'ساعة ذكية للياقة',
+      'Pulsa', 449, 599, 4.4, 1530, 60,
+      'Tracks steps, heart rate and sleep. Water resistant with a 7 day battery.',
+      'تتبع الخطوات ونبضات القلب والنوم. مقاومة للماء وبطارية تدوم 7 أيام.'),
+  _p('portable-bluetooth-speaker', 'electronics', 'audio',
+      'Portable Bluetooth Speaker', 'مكبر صوت بلوتوث محمول',
+      'Auralyn', 199, null, 4.6, 3020, 80,
+      'Rich sound in a small body. Splash proof with 12 hours of playtime.',
+      'صوت غني في حجم صغير. مقاوم للرذاذ ويعمل 12 ساعة.'),
+  _p('fast-wireless-charger', 'electronics', 'accessories',
+      'Fast Wireless Charger', 'شاحن لاسلكي سريع',
+      'Voltix', 79, 99, 4.3, 756, 150,
+      '15W wireless charging pad that works with most modern phones.',
+      'قاعدة شحن لاسلكي 15 واط تعمل مع معظم الهواتف الحديثة.'),
+
+  // Fashion
+  _p('classic-leather-sneakers', 'fashion', 'shoes',
+      'Classic Leather Sneakers', 'حذاء رياضي جلدي كلاسيكي',
+      'Stridewell', 289, 349, 4.5, 640, 35,
+      'Clean leather sneakers with a cushioned sole for everyday wear.',
+      'حذاء رياضي جلدي أنيق بنعل مريح للاستخدام اليومي.'),
+  _p('mens-cotton-thobe', 'fashion', 'men',
+      "Men's Cotton Thobe", 'ثوب رجالي قطني',
+      'Najd Weave', 219, null, 4.6, 880, 50,
+      'Breathable cotton thobe with a tailored fit, easy to care for.',
+      'ثوب قطني مريح بقصّة مفصّلة وسهل العناية.'),
+  _p('everyday-abaya', 'fashion', 'women',
+      'Everyday Abaya', 'عباية يومية',
+      'Najd Weave', 259, 329, 4.7, 1210, 30,
+      'Light, flowing abaya in a soft crepe fabric with hidden pockets.',
+      'عباية خفيفة بقماش كريب ناعم مع جيوب مخفية.'),
+  _p('canvas-backpack', 'fashion', 'bags',
+      'Canvas Backpack', 'حقيبة ظهر قماشية',
+      'Trekline', 129, null, 4.4, 502, 70,
+      'Durable canvas backpack with a padded laptop pocket.',
+      'حقيبة ظهر قماشية متينة مع جيب مبطن للابتوب.'),
+
+  // Home & Kitchen
+  _p('air-fryer-4-5l', 'home-kitchen', 'kitchen',
+      'Air Fryer 4.5L', 'قلاية هوائية 4.5 لتر',
+      'Crispo', 299, 399, 4.6, 2750, 45,
+      'Cook crispy meals with little oil. Digital controls and a dishwasher-safe basket.',
+      'حضّر وجبات مقرمشة بقليل من الزيت. أزرار رقمية وسلة تغسل في غسالة الأطباق.'),
+  _p('cotton-bedding-set-queen', 'home-kitchen', 'bedding',
+      'Cotton Bedding Set, Queen', 'طقم مفروشات قطن مقاس كوين',
+      'Softnest', 349, null, 4.5, 318, 20,
+      'Soft cotton bedding set: fitted sheet, duvet cover and two pillowcases.',
+      'طقم مفروشات قطني ناعم: شرشف مطاطي وغطاء لحاف وكيسا وسادة.'),
+  _p('ceramic-table-vase', 'home-kitchen', 'decor',
+      'Ceramic Table Vase', 'مزهرية سيراميك للطاولة',
+      'Dune & Co', 89, 119, 4.3, 140, 60,
+      'Hand-finished ceramic vase in a warm sand colour.',
+      'مزهرية سيراميك بتشطيب يدوي بلون رملي دافئ.'),
+
+  // Beauty
+  _p('vitamin-c-face-serum', 'beauty', 'skincare',
+      'Vitamin C Face Serum', 'سيروم فيتامين سي للوجه',
+      'Glowra', 119, 149, 4.5, 1980, 100,
+      'Brightening serum with vitamin C and hyaluronic acid. 30ml.',
+      'سيروم مفتّح بفيتامين سي وحمض الهيالورونيك. 30 مل.'),
+  _p('oud-eau-de-parfum', 'beauty', 'fragrance',
+      'Oud Eau de Parfum 100ml', 'عطر عود 100 مل',
+      'Maison Rimal', 389, null, 4.8, 760, 40,
+      'Deep oud with amber and a hint of rose. Long lasting.',
+      'عود عميق مع العنبر ولمسة من الورد. ثبات طويل.'),
+  _p('argan-hair-oil', 'beauty', 'hair',
+      'Argan Hair Oil', 'زيت الأرغان للشعر',
+      'Glowra', 59, 75, 4.4, 1220, 120,
+      'Lightweight argan oil that smooths and adds shine. 100ml.',
+      'زيت أرغان خفيف يمنح النعومة واللمعان. 100 مل.'),
+
+  // Sports
+  _p('non-slip-yoga-mat', 'sports', 'fitness',
+      'Non-Slip Yoga Mat', 'سجادة يوغا غير قابلة للانزلاق',
+      'Flexa', 99, 129, 4.5, 870, 90,
+      '6mm thick mat with a grippy surface and a carry strap.',
+      'سجادة بسماكة 6 ملم بسطح ثابت وحزام حمل.'),
+  _p('adjustable-dumbbell-set', 'sports', 'fitness',
+      'Adjustable Dumbbell Set', 'طقم دمبل قابل للتعديل',
+      'Flexa', 549, 699, 4.6, 310, 15,
+      'Adjusts from 2 to 24 kg. Replaces a whole rack of weights.',
+      'يمكن ضبط الوزن من 2 إلى 24 كجم. يغني عن رف كامل من الأوزان.'),
+
+  // Toys & Kids
+  _p('building-blocks-set-500', 'toys-kids', 'toys',
+      'Building Blocks Set, 500 pcs', 'مجموعة مكعبات بناء 500 قطعة',
+      'Brickly', 139, null, 4.7, 1450, 55,
+      '500 colourful blocks with an idea booklet. Ages 6 and up.',
+      '500 قطعة ملونة مع كتيّب أفكار. من عمر 6 سنوات.'),
+  _p('family-board-game', 'toys-kids', 'board-games',
+      'Family Board Game', 'لعبة لوحية عائلية',
+      'Playhouse', 89, 109, 4.5, 390, 65,
+      'A quick, funny game for 2 to 6 players. About 30 minutes.',
+      'لعبة سريعة وممتعة من 2 إلى 6 لاعبين. مدتها حوالي 30 دقيقة.'),
+
+  // Grocery
+  _p('cardamom-arabic-coffee-500g', 'grocery', 'coffee',
+      'Cardamom Arabic Coffee 500g', 'قهوة عربية بالهيل 500 جم',
+      'Qahwa House', 55, null, 4.7, 2100, 200,
+      'Freshly roasted Arabic coffee with cardamom, ready to brew.',
+      'قهوة عربية محمصة طازجة بالهيل جاهزة للتحضير.'),
+  _p('premium-mixed-nuts-750g', 'grocery', 'snacks',
+      'Premium Mixed Nuts 750g', 'مكسرات مشكلة فاخرة 750 جم',
+      'Nutri Farm', 69, 85, 4.6, 960, 140,
+      'Roasted almonds, cashews, pistachios and walnuts in a resealable tin.',
+      'لوز وكاجو وفستق وجوز محمص في علبة قابلة لإعادة الإغلاق.'),
+
+  // Books
+  _p('business-strategy-handbook', 'books', 'business',
+      'Business Strategy Handbook', 'دليل استراتيجية الأعمال',
+      'Inkwell Press', 79, null, 4.3, 210, 40,
+      'A practical guide to planning and growing a small business.',
+      'دليل عملي لتخطيط وتنمية المشاريع الصغيرة.'),
+
+  // Automotive
+  _p('portable-car-vacuum', 'automotive', 'car-care',
+      'Portable Car Vacuum Cleaner', 'مكنسة سيارة محمولة',
+      'Voltix', 119, 149, 4.2, 540, 75,
+      'Cordless vacuum with strong suction and three nozzles for tight spots.',
+      'مكنسة لاسلكية بقوة شفط عالية وثلاث رؤوس للأماكن الضيقة.'),
+];

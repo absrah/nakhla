@@ -9,6 +9,8 @@ import '../../../core/theme/theme_mode_notifier.dart';
 import '../../auth/model/auth_repository.dart';
 import '../../auth/view_model/session_provider.dart';
 import '../../onboarding/view_model/onboarding_view_model.dart';
+import '../../../core/errors/app_exception.dart';
+import '../../catalog/model/catalog_seeder.dart';
 
 /// TEMPORARY placeholder for testing guest vs logged-in behavior.
 /// Replaced by the real Home screen in Phase 2.
@@ -67,6 +69,22 @@ class HomeScreen extends ConsumerWidget {
               child: const Text('Show intro again (testing)'),
             ),
             const Spacer(),
+                        if (!isGuest)
+              TextButton(
+                onPressed: () async {
+                  final messenger = ScaffoldMessenger.of(context);
+                  try {
+                    final count = await ref.read(catalogSeederProvider).seed();
+                    messenger.showSnackBar(
+                      SnackBar(content: Text('Wrote $count documents')),
+                    );
+                  } on AppException catch (e) {
+                    messenger.showSnackBar(SnackBar(content: Text(e.message)));
+                  }
+                },
+                child: const Text('Seed catalog (dev, admin only)'),
+              ),
+
             if (isGuest)
               FilledButton(
                 onPressed: () => context.go(AppRoutes.login),
