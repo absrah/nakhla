@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/router/app_routes.dart';
 import '../../../../core/theme/app_palette.dart';
 import '../../../../core/utils/formatters.dart';
+import '../../../cart/view/add_to_cart.dart';
 import '../../model/product.dart';
 import 'product_image.dart';
 
 /// Product card for the 2-column grids: image, name, rating, price and the
 /// lime "Add to cart" button. Tapping the card opens the product.
-class ProductCard extends StatelessWidget {
+class ProductCard extends ConsumerWidget {
   const ProductCard({super.key, required this.product});
 
   final Product product;
@@ -18,15 +20,8 @@ class ProductCard extends StatelessWidget {
   /// Height of everything under the image. The grid adds it to the card width.
   static double get belowImage => 156.w;
 
-  void _addToCart(BuildContext context) {
-    // TEMPORARY until the cart step.
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(const SnackBar(content: Text('Cart comes in the cart step')));
-  }
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final p = context.palette;
     final text = Theme.of(context).textTheme;
 
@@ -92,9 +87,14 @@ class ProductCard extends StatelessWidget {
             height: 44.w,
             width: double.infinity,
             child: FilledButton.icon(
-              onPressed: () => _addToCart(context),
+              onPressed: product.inStock
+                  ? () => addToCart(context, ref, product)
+                  : null,
               icon: Icon(Icons.add, size: 18.w),
-              label: Text('Add to cart', style: TextStyle(fontSize: 15.sp)),
+              label: Text(
+                product.inStock ? 'Add to cart' : 'Out of stock',
+                style: TextStyle(fontSize: 15.sp),
+              ),
               style: FilledButton.styleFrom(
                 minimumSize: Size.zero,
                 padding: EdgeInsets.zero,

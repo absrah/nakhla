@@ -34,6 +34,10 @@ class Product {
 
   bool get inStock => stock > 0;
 
+  /// Most pieces one order line may hold: what is in stock, but never more
+  /// than 10 (the cart rules in Firestore enforce the same limit).
+  int get maxOrderQuantity => stock < 10 ? stock : 10;
+  
   bool get hasDiscount => oldPrice != null && oldPrice! > price;
 
   /// Whole-number percent off, for the sale tag (e.g. 26).
