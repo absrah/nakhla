@@ -8,8 +8,8 @@ import '../../../core/widgets/app_text_field.dart';
 import '../../../core/widgets/error_banner.dart';
 import '../../../core/widgets/loading_button.dart';
 import '../view_model/sign_up_view_model.dart';
-import 'package:go_router/go_router.dart';      // with the other package: imports
-import '../../../core/router/app_routes.dart';  // with the other relative imports
+import 'package:go_router/go_router.dart';      
+import '../../../core/router/app_routes.dart';  
 
 class SignUpScreen extends ConsumerStatefulWidget {
   const SignUpScreen({super.key});
@@ -56,7 +56,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
 
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Create account')),
+      appBar: AppBar(title: const Text('Sign up')),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: 24.w),
@@ -134,13 +134,19 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                     SizedBox(height: 16.h),
                   ],
                   LoadingButton(
-                    label: 'Create account',
+                    label: 'Sign up',
                     isLoading: state.isLoading,
                     onPressed: _submit,
                   ),
                   SizedBox(height: 8.h),
                   TextButton(
-                  onPressed: () => context.go(AppRoutes.login),
+                    onPressed: () {
+                      final from =
+                          GoRouterState.of(context).uri.queryParameters['from'];
+                      context.go(from == null
+                          ? AppRoutes.login
+                          : '${AppRoutes.login}?from=${Uri.encodeComponent(from)}');
+                    },
                     child: const Text('Already have an account? Log in'),
                   ),
                   SizedBox(height: 24.h),

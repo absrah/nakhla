@@ -9,8 +9,8 @@ import '../../../core/widgets/app_text_field.dart';
 import '../../../core/widgets/error_banner.dart';
 import '../../../core/widgets/loading_button.dart';
 import '../view_model/log_in_view_model.dart';
-import 'package:go_router/go_router.dart';      // with the other package: imports
-import '../../../core/router/app_routes.dart';  // with the other relative imports
+import 'package:go_router/go_router.dart';      
+import '../../../core/router/app_routes.dart';  
 
 class LogInScreen extends ConsumerStatefulWidget {
   const LogInScreen({super.key});
@@ -110,7 +110,6 @@ class _LogInScreenState extends ConsumerState<LogInScreen> {
                   Align(
                     alignment: AlignmentDirectional.centerStart,
                     child: TextButton(
-                      // TEMPORARY navigation until the router is added.
                     onPressed: () => context.push(AppRoutes.forgotPassword),
                       child: const Text('Forgot password?'),
                     ),
@@ -127,8 +126,13 @@ class _LogInScreenState extends ConsumerState<LogInScreen> {
                   ),
                   SizedBox(height: 12.h),
                   OutlinedButton(
-                    // TEMPORARY navigation until the router is added.
-                  onPressed: () => context.push(AppRoutes.signUp),
+                    onPressed: () {
+                      final from =
+                          GoRouterState.of(context).uri.queryParameters['from'];
+                      context.go(from == null
+                          ? AppRoutes.signUp
+                          : '${AppRoutes.signUp}?from=${Uri.encodeComponent(from)}');
+                    },
                     child: const Text('Sign up'),
                   ),
                   SizedBox(height: 8.h),

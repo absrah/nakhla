@@ -295,16 +295,7 @@ class _CheckoutBar extends StatelessWidget {
               ),
             ),
           FilledButton(
-            onPressed: blocked
-                ? null
-                : () {
-                    // TEMPORARY until Phase 3 (checkout).
-                    ScaffoldMessenger.of(context)
-                      ..hideCurrentSnackBar()
-                      ..showSnackBar(
-                        const SnackBar(content: Text('Checkout comes in the next phase')),
-                      );
-                  },
+            onPressed: blocked ? null : () => context.push(AppRoutes.checkout),
             style: FilledButton.styleFrom(minimumSize: Size.fromHeight(56.w)),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

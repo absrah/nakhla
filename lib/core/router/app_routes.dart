@@ -19,6 +19,15 @@ abstract final class AppRoutes {
   static const product = '/product/:id';
   static const category = '/category/:id';
 
+    // Checkout and addresses (also opened on top of the tabs).
+  static const checkout = '/checkout';
+  static const addresses = '/addresses';
+  static const addressesPick = '/addresses?pick=1'; // opened from checkout
+  static const addressForm = '/addresses/edit';
+
+  static String addressFormPath({String? id}) =>
+      id == null ? addressForm : '$addressForm?id=$id';
+
   static String productPath(String id) => '/product/$id';
 
   /// All products of a category, or only one type ("Phones") inside it.

@@ -39,4 +39,19 @@ abstract final class Validators {
     }
     return null;
   }
+
+    /// Required text field (city, district, street...).
+  static String? required(String? value, String message) =>
+      (value?.trim().isEmpty ?? true) ? message : null;
+
+  /// Phone that must be filled in (for delivery), same format as [phone].
+  static String? requiredPhone(String? value) =>
+      (value?.trim().isEmpty ?? true) ? 'Enter a phone number' : phone(value);
+
+  /// Optional: empty is fine, otherwise exactly 5 digits.
+  static String? postalCode(String? value) {
+    final v = value?.trim() ?? '';
+    if (v.isEmpty) return null;
+    return RegExp(r'^[0-9]{5}$').hasMatch(v) ? null : 'Postal code is 5 digits';
+  }
 }

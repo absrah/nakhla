@@ -19,6 +19,9 @@ import 'app_routes.dart';
 import '../../features/catalog/view/product_detail_screen.dart';
 import '../../features/catalog/view/product_list_screen.dart';
 import '../../features/catalog/view/search_screen.dart';
+import '../../features/address/view/address_form_screen.dart';
+import '../../features/address/view/addresses_screen.dart';
+import '../../features/checkout/view/checkout_screen.dart';
 
 /// Screens that only make sense when you are NOT logged in.
 const _authPages = {
@@ -33,6 +36,8 @@ const _needsLogin = {
   AppRoutes.cart,
   AppRoutes.wishlist,
   AppRoutes.account,
+  AppRoutes.checkout,
+  AppRoutes.addresses,
 };
 
 /// True for a protected screen or any page inside it (/account/orders...).
@@ -129,6 +134,22 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.product,
         builder: (context, state) =>
             ProductDetailScreen(productId: state.pathParameters['id']!),
+      ),
+            GoRoute(
+        path: AppRoutes.checkout,
+        builder: (context, state) => const CheckoutScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.addresses,
+        builder: (context, state) => AddressesScreen(
+          pick: state.uri.queryParameters['pick'] == '1',
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.addressForm,
+        builder: (context, state) => AddressFormScreen(
+          addressId: state.uri.queryParameters['id'],
+        ),
       ),
 
       // The five tabs. Each tab keeps its own screen and scroll position

@@ -8,8 +8,8 @@ import '../../../core/widgets/app_text_field.dart';
 import '../../../core/widgets/error_banner.dart';
 import '../../../core/widgets/loading_button.dart';
 import '../view_model/forgot_password_view_model.dart';
-import 'package:go_router/go_router.dart';      // with the other package: imports
-import '../../../core/router/app_routes.dart';  // with the other relative imports
+import 'package:go_router/go_router.dart';      
+import '../../../core/router/app_routes.dart';  
 
 class ForgotPasswordScreen extends ConsumerStatefulWidget {
   const ForgotPasswordScreen({super.key});

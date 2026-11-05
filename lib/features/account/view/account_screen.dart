@@ -40,6 +40,11 @@ class AccountScreen extends ConsumerWidget {
             style: TextStyle(color: p.muted, fontSize: 12.sp),
           ),
           SizedBox(height: 24.w),
+                    OutlinedButton(
+            onPressed: () => context.push(AppRoutes.addresses),
+            child: const Text('My addresses'),
+          ),
+          SizedBox(height: 12.w),
           OutlinedButton(
             onPressed: () => ref.read(authRepositoryProvider).signOut(),
             child: const Text('Log out'),
