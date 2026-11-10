@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'core/router/app_router.dart';
 import 'core/theme/app_theme.dart';
 import 'core/theme/theme_mode_notifier.dart';
+import 'features/cart/view/price_change_listener.dart';
 
 class NakhlaApp extends ConsumerWidget {
   const NakhlaApp({super.key});
@@ -29,6 +30,8 @@ class NakhlaApp extends ConsumerWidget {
           themeMode: mode,
           routerConfig: router,
           scrollBehavior: const _AppScrollBehavior(),
+          builder: (context, child) =>
+          PriceChangeListener(child: child ?? const SizedBox.shrink()),
         ),
       ),
     );

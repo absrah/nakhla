@@ -124,7 +124,9 @@ class _CartItemCard extends ConsumerWidget {
     if (!product.inStock) {
       warning = 'Out of stock. Remove it to continue.';
     } else if (line.quantity > product.stock) {
-      warning = 'Only ${product.stock} left. Lower the quantity.';
+      warning = 'Only ${product.stock} in stock. Lower the quantity.';
+    } else if (product.stock <= 5) {
+      warning = 'Only ${product.stock} left in stock';
     }
 
     return GestureDetector(
@@ -163,9 +165,25 @@ class _CartItemCard extends ConsumerWidget {
                   ),
                   if (warning != null) ...[
                     SizedBox(height: 4.w),
-                    Text(
-                      warning,
-                      style: TextStyle(fontSize: 12.sp, color: p.link),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.error_outline,
+                          size: 15.w,
+                          color: Theme.of(context).colorScheme.error,
+                        ),
+                        SizedBox(width: 4.w),
+                        Expanded(
+                          child: Text(
+                            warning,
+                            style: TextStyle(
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w600,
+                              color: Theme.of(context).colorScheme.error,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                   SizedBox(height: 8.w),

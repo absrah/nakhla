@@ -22,6 +22,11 @@ import '../../features/catalog/view/search_screen.dart';
 import '../../features/address/view/address_form_screen.dart';
 import '../../features/address/view/addresses_screen.dart';
 import '../../features/checkout/view/checkout_screen.dart';
+import '../../features/checkout/view/payment_screen.dart';
+import '../../features/order/view/order_placed_screen.dart';
+import '../../features/cart/view/price_change_listener.dart';
+import '../../features/order/view/order_detail_screen.dart';
+import '../../features/order/view/orders_screen.dart';
 
 /// Screens that only make sense when you are NOT logged in.
 const _authPages = {
@@ -38,6 +43,8 @@ const _needsLogin = {
   AppRoutes.account,
   AppRoutes.checkout,
   AppRoutes.addresses,
+  AppRoutes.orderPlacedBase,
+  AppRoutes.orders
 };
 
 /// True for a protected screen or any page inside it (/account/orders...).
@@ -56,6 +63,11 @@ String? _returnTo(GoRouterState state) {
 }
 
 final routerProvider = Provider<GoRouter>((ref) {
+  // On the web, make the address bar follow pages opened with push too,
+  // so a reload stays on the same page.
+  GoRouter.optionURLReflectsImperativeAPIs = true;
+
+
   // The router re-checks its redirect whenever the session changes.
   final refresh = ValueNotifier<int>(0);
   ref.listen(authStateProvider, (previous, next) => refresh.value++);
@@ -135,9 +147,33 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) =>
             ProductDetailScreen(productId: state.pathParameters['id']!),
       ),
-            GoRoute(
+      GoRoute(
         path: AppRoutes.checkout,
-        builder: (context, state) => const CheckoutScreen(),
+        builder: (context, state) => const PriceChangeListener(
+          useDialog: true,
+          child: CheckoutScreen(),
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.payment,
+        builder: (context, state) => const PriceChangeListener(
+          useDialog: true,
+          child: PaymentScreen(),
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.orderPlaced,
+        builder: (context, state) =>
+        OrderPlacedScreen(orderId: state.pathParameters['id']!),
+      ),
+      GoRoute(
+        path: AppRoutes.orders,
+       builder: (context, state) => const OrdersScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.orderDetail,
+        builder: (context, state) =>
+        OrderDetailScreen(orderId: state.pathParameters['id']!),
       ),
       GoRoute(
         path: AppRoutes.addresses,

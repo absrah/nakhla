@@ -25,6 +25,14 @@ abstract final class AppRoutes {
   static const addressesPick = '/addresses?pick=1'; // opened from checkout
   static const addressForm = '/addresses/edit';
 
+    static const payment = '/checkout/payment';
+  static const orderPlacedBase = '/order-placed';
+  static const orderPlaced = '/order-placed/:id';
+  static String orderPlacedPath(String id) => '$orderPlacedBase/$id';
+    static const orders = '/orders';
+  static const orderDetail = '/orders/:id';
+  static String orderPath(String id) => '/orders/$id';
+
   static String addressFormPath({String? id}) =>
       id == null ? addressForm : '$addressForm?id=$id';
 

@@ -39,6 +39,11 @@ class AccountScreen extends ConsumerWidget {
             user?.uid ?? '',
             style: TextStyle(color: p.muted, fontSize: 12.sp),
           ),
+          OutlinedButton(
+            onPressed: () => context.push(AppRoutes.orders),
+            child: const Text('My orders'),
+          ),
+          SizedBox(height: 12.w),
           SizedBox(height: 24.w),
                     OutlinedButton(
             onPressed: () => context.push(AppRoutes.addresses),

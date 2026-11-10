@@ -21,3 +21,13 @@ String formatCount(int count) {
 
 /// "smart-home" becomes "SMART HOME" (the small label on product images).
 String slugToLabel(String slug) => slug.replaceAll('-', ' ').toUpperCase();
+
+const _months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+/// "8 Nov 2026, 08:50" in the phone's local time.
+String formatOrderDate(DateTime date) {
+  final d = date.toLocal();
+  final hh = d.hour.toString().padLeft(2, '0');
+  final mm = d.minute.toString().padLeft(2, '0');
+  return '${d.day} ${_months[d.month - 1]} ${d.year}, $hh:$mm';
+}

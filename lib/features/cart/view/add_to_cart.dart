@@ -34,6 +34,7 @@ Future<void> addToCart(
       ..hideCurrentSnackBar()
       ..showSnackBar(
         SnackBar(
+          persist: false,
           content: Text(
             added ? 'Added to cart' : 'You already have the maximum quantity',
           ),

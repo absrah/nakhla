@@ -11,10 +11,11 @@ import '../../address/view/widgets/address_card.dart';
 import '../../address/view_model/address_providers.dart';
 import '../../cart/model/cart_line.dart';
 import '../../cart/view_model/cart_providers.dart';
-import '../model/checkout_totals.dart';
 import '../model/delivery_option.dart';
 import '../view_model/checkout_providers.dart';
 import '../../../core/widgets/app_back_button.dart';
+import 'widgets/checkout_steps.dart';
+import 'widgets/totals_card.dart';
 
 /// Step 1 of checkout: where to deliver and how fast.
 /// Payment (step 2) comes next.
@@ -67,7 +68,7 @@ class _Content extends ConsumerWidget {
     return ListView(
       padding: EdgeInsets.fromLTRB(20.w, 4.w, 20.w, 24.w),
       children: [
-        _Steps(hasAddress: hasAddress),
+        CheckoutSteps(step: 2, addressDone: hasAddress),
         SizedBox(height: 24.w),
         const _SectionTitle('Shipping address'),
         SizedBox(height: 12.w),
@@ -84,7 +85,7 @@ class _Content extends ConsumerWidget {
           SizedBox(height: 10.w),
         ],
         SizedBox(height: 14.w),
-        _TotalsCard(totals: totals),
+        TotalsCard(totals: totals),
       ],
     );
   }
@@ -100,74 +101,6 @@ class _SectionTitle extends StatelessWidget {
     return Text(
       text,
       style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w700),
-    );
-  }
-}
-
-/// Address ✓ · Delivery 2 · Payment 3
-class _Steps extends StatelessWidget {
-  const _Steps({required this.hasAddress});
-
-  final bool hasAddress;
-
-  @override
-  Widget build(BuildContext context) {
-    final p = context.palette;
-
-    Widget step(String label, Widget mark, {bool active = false}) {
-      return Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            width: 24.w,
-            height: 24.w,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: active ? p.accent : null,
-              border: active ? null : Border.all(color: p.border),
-            ),
-            child: mark,
-          ),
-          SizedBox(width: 6.w),
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 13.sp,
-              fontWeight: active ? FontWeight.w700 : FontWeight.w500,
-              color: active ? null : p.muted,
-            ),
-          ),
-        ],
-      );
-    }
-
-    Text number(String n, {Color? color}) => Text(
-          n,
-          style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w700, color: color),
-        );
-
-    Widget line() => Expanded(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8.w),
-            child: Divider(color: p.border),
-          ),
-        );
-
-    return Row(
-      children: [
-        step(
-          'Address',
-          hasAddress
-              ? Icon(Icons.check, size: 15.w, color: p.onAccent)
-              : number('1', color: p.muted),
-          active: hasAddress,
-        ),
-        line(),
-        step('Delivery', number('2', color: p.onAccent), active: true),
-        line(),
-        step('Payment', number('3', color: p.muted)),
-      ],
     );
   }
 }
@@ -304,82 +237,6 @@ class _DeliveryTile extends StatelessWidget {
   }
 }
 
-class _TotalsCard extends StatelessWidget {
-  const _TotalsCard({required this.totals});
-
-  final CheckoutTotals totals;
-
-  @override
-  Widget build(BuildContext context) {
-    final p = context.palette;
-    final onSurface = Theme.of(context).colorScheme.onSurface;
-
-    Widget row(String label, String value, {bool bold = false}) {
-      return Padding(
-        padding: EdgeInsets.symmetric(vertical: 4.w),
-        child: Row(
-          children: [
-            Expanded(
-              child: Text(
-                label,
-                style: TextStyle(
-                  fontSize: bold ? 18.sp : 15.sp,
-                  fontWeight: bold ? FontWeight.w700 : FontWeight.w400,
-                  color: bold ? null : p.muted,
-                ),
-              ),
-            ),
-            Text(
-              value,
-              style: TextStyle(
-                fontSize: bold ? 18.sp : 15.sp,
-                fontWeight: bold ? FontWeight.w700 : FontWeight.w600,
-                color: bold ? null : onSurface,
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-
-    return Container(
-      padding: EdgeInsets.all(16.w),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(20.r),
-        border: Border.all(color: p.border),
-      ),
-      child: Column(
-        children: [
-          row(
-            'Subtotal (${totals.itemCount} ${totals.itemCount == 1 ? 'item' : 'items'})',
-            formatSar(totals.subtotalExVat),
-          ),
-          row(
-            'Delivery',
-            totals.deliveryFee == 0 ? 'Free' : formatSar(totals.deliveryExVat),
-          ),
-          row('VAT (15%)', formatSar(totals.vat)),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 8.w),
-            child: const Divider(),
-          ),
-          row('Total', formatSar(totals.total), bold: true),
-          Padding(
-            padding: EdgeInsets.only(top: 2.w),
-            child: Align(
-              alignment: AlignmentDirectional.centerEnd,
-              child: Text(
-                'Prices include VAT',
-                style: TextStyle(fontSize: 12.sp, color: p.muted),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
 
 class _ContinueBar extends ConsumerWidget {
   const _ContinueBar({
@@ -426,12 +283,7 @@ class _ContinueBar extends ConsumerWidget {
             FilledButton(
               onPressed: enabled
                   ? () {
-                      // TEMPORARY until the payment screen (next batch).
-                      ScaffoldMessenger.of(context)
-                        ..hideCurrentSnackBar()
-                        ..showSnackBar(
-                          const SnackBar(content: Text('Payment comes in the next step')),
-                        );
+                      context.push(AppRoutes.payment);
                     }
                   : null,
               style: FilledButton.styleFrom(minimumSize: Size.fromHeight(56.w)),
