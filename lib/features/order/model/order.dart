@@ -32,11 +32,11 @@ class OrderItem {
   }
 
   Map<String, dynamic> toMap() => {
-        'productId': productId,
-        'name': name,
-        'price': price,
-        'quantity': quantity,
-      };
+    'productId': productId,
+    'name': name,
+    'price': price,
+    'quantity': quantity,
+  };
 }
 
 /// An order, stored at orders/{orderId}.
@@ -68,8 +68,7 @@ class Order {
   final DateTime? createdAt; // null for a moment right after ordering
 
   /// Short number the shopper sees: the first 8 characters of the id.
-  String get number =>
-      (id.length <= 8 ? id : id.substring(0, 8)).toUpperCase();
+  String get number => (id.length <= 8 ? id : id.substring(0, 8)).toUpperCase();
 
   factory Order.fromMap(String id, Map<String, dynamic> map) {
     final rawItems = map['items'] as List<dynamic>? ?? const [];

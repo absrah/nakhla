@@ -113,19 +113,29 @@ class _Done extends StatelessWidget {
                 Container(
                   width: 96.w,
                   height: 96.w,
-                  decoration: BoxDecoration(color: p.accent, shape: BoxShape.circle),
+                  decoration: BoxDecoration(
+                    color: p.accent,
+                    shape: BoxShape.circle,
+                  ),
                   child: Icon(Icons.check, size: 52.w, color: p.onAccent),
                 ),
                 SizedBox(height: 24.w),
                 Text(
                   'Order placed!',
-                  style: TextStyle(fontSize: 28.sp, fontWeight: FontWeight.w700),
+                  style: TextStyle(
+                    fontSize: 28.sp,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
                 SizedBox(height: 8.w),
                 Text(
                   'Thanks for shopping with us. You will pay in cash when your order arrives.',
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 15.sp, height: 1.4, color: p.muted),
+                  style: TextStyle(
+                    fontSize: 15.sp,
+                    height: 1.4,
+                    color: p.muted,
+                  ),
                 ),
                 SizedBox(height: 28.w),
                 Container(

@@ -9,7 +9,7 @@ import 'seed_data.dart';
 /// safe: the same ids are overwritten, nothing is duplicated.
 class CatalogSeeder {
   CatalogSeeder({FirebaseFirestore? firestore})
-      : _db = firestore ?? FirebaseFirestore.instance;
+    : _db = firestore ?? FirebaseFirestore.instance;
 
   final FirebaseFirestore _db;
 
@@ -18,7 +18,10 @@ class CatalogSeeder {
     try {
       final batch = _db.batch();
       for (final category in seedCategories) {
-        batch.set(_db.collection('categories').doc(category.id), category.toMap());
+        batch.set(
+          _db.collection('categories').doc(category.id),
+          category.toMap(),
+        );
       }
       for (final product in seedProducts) {
         batch.set(_db.collection('products').doc(product.id), product.toMap());

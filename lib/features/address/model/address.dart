@@ -51,12 +51,12 @@ class Address {
   /// createdAt is left out on purpose: the repository sets it once, with the
   /// server's clock, when the address is created.
   Map<String, dynamic> toMap() => {
-        'label': label,
-        'name': name,
-        'phone': phone,
-        'city': city,
-        'district': district,
-        'street': street,
-        'postalCode': postalCode,
-      };
+    'label': label,
+    'name': name,
+    'phone': phone,
+    'city': city,
+    'district': district,
+    'street': street,
+    'postalCode': postalCode,
+  };
 }

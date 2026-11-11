@@ -38,10 +38,7 @@ class SplashScreen extends StatelessWidget {
               style: text.headlineLarge?.copyWith(fontWeight: FontWeight.w700),
             ),
             SizedBox(height: 2.h),
-            Text(
-              'نخلة',
-              style: text.titleMedium?.copyWith(color: p.muted),
-            ),
+            Text('نخلة', style: text.titleMedium?.copyWith(color: p.muted)),
             SizedBox(height: 32.h),
             SizedBox(
               width: 24.w,

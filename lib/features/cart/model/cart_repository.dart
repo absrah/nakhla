@@ -8,7 +8,7 @@ import 'cart_item.dart';
 /// users/{uid}/cart/{productId}, with `quantity` and `addedAt`.
 class CartRepository {
   CartRepository({FirebaseFirestore? firestore})
-      : _db = firestore ?? FirebaseFirestore.instance;
+    : _db = firestore ?? FirebaseFirestore.instance;
 
   final FirebaseFirestore _db;
 
@@ -20,8 +20,9 @@ class CartRepository {
     return _cart(uid)
         .snapshots()
         .map((snap) {
-          final items =
-              snap.docs.map((d) => CartItem.fromMap(d.id, d.data())).toList();
+          final items = snap.docs
+              .map((d) => CartItem.fromMap(d.id, d.data()))
+              .toList();
           items.sort((a, b) {
             final x = a.addedAt;
             final y = b.addedAt;
@@ -86,15 +87,20 @@ class CartRepository {
   AppException _toAppException(Object error) {
     if (error is FirebaseException) {
       if (error.code == 'unavailable') {
-        return const AppException('No connection. Check your internet and try again.');
+        return const AppException(
+          'No connection. Check your internet and try again.',
+        );
       }
       if (error.code == 'permission-denied') {
-        return const AppException('We could not update your cart. Please try again.');
+        return const AppException(
+          'We could not update your cart. Please try again.',
+        );
       }
     }
     return const AppException('We could not update your cart.');
   }
 }
 
-final cartRepositoryProvider =
-    Provider<CartRepository>((ref) => CartRepository());
+final cartRepositoryProvider = Provider<CartRepository>(
+  (ref) => CartRepository(),
+);

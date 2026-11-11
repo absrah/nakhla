@@ -7,48 +7,48 @@ import 'app_palette.dart';
 /// The two themes of the app. Both use the Midnight Palm colors.
 abstract final class AppTheme {
   static ThemeData get light => _build(
-        scheme: const ColorScheme(
-          brightness: Brightness.light,
-          primary: AppColors.forest,
-          onPrimary: AppColors.fog,
-          secondary: AppColors.lime,
-          onSecondary: AppColors.forest,
-          tertiary: AppColors.flame,
-          onTertiary: AppColors.ink,
-          error: AppColors.flameDeep,
-          onError: Colors.white,
-          surface: Colors.white,
-          onSurface: AppColors.ink,
-          outline: AppColors.border,
-        ),
-        palette: AppPalette.light,
-        background: AppColors.fog,
-        strong: AppColors.forest, // headings, selected labels
-        field: Colors.white, // text field fill
-        bar: Colors.white, // bottom bar
-      );
+    scheme: const ColorScheme(
+      brightness: Brightness.light,
+      primary: AppColors.forest,
+      onPrimary: AppColors.fog,
+      secondary: AppColors.lime,
+      onSecondary: AppColors.forest,
+      tertiary: AppColors.flame,
+      onTertiary: AppColors.ink,
+      error: AppColors.flameDeep,
+      onError: Colors.white,
+      surface: Colors.white,
+      onSurface: AppColors.ink,
+      outline: AppColors.border,
+    ),
+    palette: AppPalette.light,
+    background: AppColors.fog,
+    strong: AppColors.forest, // headings, selected labels
+    field: Colors.white, // text field fill
+    bar: Colors.white, // bottom bar
+  );
 
   static ThemeData get dark => _build(
-        scheme: const ColorScheme(
-          brightness: Brightness.dark,
-          primary: AppColors.lime,
-          onPrimary: AppColors.forest,
-          secondary: AppColors.lime,
-          onSecondary: AppColors.forest,
-          tertiary: AppColors.flame,
-          onTertiary: AppColors.ink,
-          error: AppColors.flameSoft,
-          onError: AppColors.ink,
-          surface: AppColors.forest,
-          onSurface: AppColors.fog,
-          outline: AppColors.darkBorder,
-        ),
-        palette: AppPalette.dark,
-        background: AppColors.forestDeep,
-        strong: AppColors.fog,
-        field: AppColors.forest,
-        bar: AppColors.forest,
-      );
+    scheme: const ColorScheme(
+      brightness: Brightness.dark,
+      primary: AppColors.lime,
+      onPrimary: AppColors.forest,
+      secondary: AppColors.lime,
+      onSecondary: AppColors.forest,
+      tertiary: AppColors.flame,
+      onTertiary: AppColors.ink,
+      error: AppColors.flameSoft,
+      onError: AppColors.ink,
+      surface: AppColors.forest,
+      onSurface: AppColors.fog,
+      outline: AppColors.darkBorder,
+    ),
+    palette: AppPalette.dark,
+    background: AppColors.forestDeep,
+    strong: AppColors.fog,
+    field: AppColors.forest,
+    bar: AppColors.forest,
+  );
 
   static ThemeData _build({
     required ColorScheme scheme,
@@ -64,10 +64,9 @@ abstract final class AppTheme {
       scaffoldBackgroundColor: background,
     );
 
-    final text = GoogleFonts.rubikTextTheme(base.textTheme).apply(
-      bodyColor: scheme.onSurface,
-      displayColor: scheme.onSurface,
-    );
+    final text = GoogleFonts.rubikTextTheme(
+      base.textTheme,
+    ).apply(bodyColor: scheme.onSurface, displayColor: scheme.onSurface);
 
     OutlineInputBorder border(Color color, [double width = 1]) {
       return OutlineInputBorder(
@@ -129,8 +128,10 @@ abstract final class AppTheme {
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: field,
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 16,
+        ),
         border: border(palette.border),
         enabledBorder: border(palette.border),
         focusedBorder: border(strong, 2),

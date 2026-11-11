@@ -111,7 +111,9 @@ class OrderCard extends StatelessWidget {
                 minimumSize: Size.fromHeight(44.w),
               ),
               onPressed: () => context.push(AppRoutes.orderPath(order.id)),
-              child: Text(order.status.isActive ? 'Track order' : 'View details'),
+              child: Text(
+                order.status.isActive ? 'Track order' : 'View details',
+              ),
             ),
           ],
         ),

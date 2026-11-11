@@ -24,7 +24,9 @@ class CartViewModel {
     if (!product.inStock) {
       throw const AppException('This product is out of stock.');
     }
-    return _ref.read(cartRepositoryProvider).addItem(
+    return _ref
+        .read(cartRepositoryProvider)
+        .addItem(
           _uid(),
           product.id,
           quantity: quantity,
@@ -36,9 +38,11 @@ class CartViewModel {
     final safe = quantity < 1
         ? 1
         : (quantity > product.maxOrderQuantity
-            ? product.maxOrderQuantity
-            : quantity);
-    await _ref.read(cartRepositoryProvider).setQuantity(_uid(), product.id, safe);
+              ? product.maxOrderQuantity
+              : quantity);
+    await _ref
+        .read(cartRepositoryProvider)
+        .setQuantity(_uid(), product.id, safe);
   }
 
   Future<void> remove(String productId) async {
@@ -46,5 +50,6 @@ class CartViewModel {
   }
 }
 
-final cartViewModelProvider =
-    Provider<CartViewModel>((ref) => CartViewModel(ref));
+final cartViewModelProvider = Provider<CartViewModel>(
+  (ref) => CartViewModel(ref),
+);

@@ -14,7 +14,8 @@ class AddressViewModel {
 
   String _uid() {
     final user = _ref.read(authStateProvider).value;
-    if (user == null) throw const AppException('Log in to manage your addresses.');
+    if (user == null)
+      throw const AppException('Log in to manage your addresses.');
     return user.uid;
   }
 
@@ -29,5 +30,6 @@ class AddressViewModel {
       _ref.read(addressRepositoryProvider).delete(_uid(), addressId);
 }
 
-final addressViewModelProvider =
-    Provider<AddressViewModel>((ref) => AddressViewModel(ref));
+final addressViewModelProvider = Provider<AddressViewModel>(
+  (ref) => AddressViewModel(ref),
+);

@@ -31,5 +31,5 @@ class LogInViewModel extends Notifier<AuthActionState> {
 
 final logInViewModelProvider =
     NotifierProvider.autoDispose<LogInViewModel, AuthActionState>(
-  LogInViewModel.new,
-);
+      LogInViewModel.new,
+    );

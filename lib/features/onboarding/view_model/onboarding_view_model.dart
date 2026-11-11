@@ -19,5 +19,6 @@ class OnboardingViewModel extends Notifier<bool> {
   }
 }
 
-final onboardingSeenProvider =
-    NotifierProvider<OnboardingViewModel, bool>(OnboardingViewModel.new);
+final onboardingSeenProvider = NotifierProvider<OnboardingViewModel, bool>(
+  OnboardingViewModel.new,
+);

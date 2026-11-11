@@ -13,7 +13,7 @@ import 'dart:async';
 /// The only place that reads and writes orders in Firestore: orders/{orderId}.
 class OrderRepository {
   OrderRepository({FirebaseFirestore? firestore})
-      : _db = firestore ?? FirebaseFirestore.instance;
+    : _db = firestore ?? FirebaseFirestore.instance;
 
   final FirebaseFirestore _db;
 
@@ -25,8 +25,9 @@ class OrderRepository {
         .where('userId', isEqualTo: uid)
         .snapshots()
         .map((snap) {
-          final list =
-              snap.docs.map((d) => Order.fromMap(d.id, d.data())).toList();
+          final list = snap.docs
+              .map((d) => Order.fromMap(d.id, d.data()))
+              .toList();
           list.sort((a, b) {
             final x = a.createdAt;
             final y = b.createdAt;
@@ -60,8 +61,9 @@ class OrderRepository {
         // All reads first (a transaction must read before it writes).
         final items = <OrderItem>[];
         for (final line in lines) {
-          final snap =
-              await tx.get(_db.collection('products').doc(line.product.id));
+          final snap = await tx.get(
+            _db.collection('products').doc(line.product.id),
+          );
           final data = snap.data();
           if (data == null) {
             throw AppException(
@@ -76,12 +78,14 @@ class OrderRepository {
                   : 'Only ${product.stock} of "${product.name}" left. Lower the quantity.',
             );
           }
-          items.add(OrderItem(
-            productId: product.id,
-            name: product.name,
-            price: product.price,
-            quantity: line.quantity,
-          ));
+          items.add(
+            OrderItem(
+              productId: product.id,
+              name: product.name,
+              price: product.price,
+              quantity: line.quantity,
+            ),
+          );
         }
 
         final subtotal = items.fold<double>(0, (acc, i) => acc + i.lineTotal);
@@ -115,24 +119,31 @@ class OrderRepository {
     }
   }
 
-    /// Cancels an order that is still "placed". The security rules allow only
+  /// Cancels an order that is still "placed". The security rules allow only
   /// that one change.
   Future<void> cancelOrder(String orderId) async {
     try {
       await _db
           .collection('orders')
           .doc(orderId)
-          .update({'status': OrderStatus.cancelled.value}).timeout(const Duration(seconds: 15));
+          .update({'status': OrderStatus.cancelled.value})
+          .timeout(const Duration(seconds: 15));
     } on TimeoutException {
-      throw const AppException('No connection. Check your internet and try again.');
+      throw const AppException(
+        'No connection. Check your internet and try again.',
+      );
     } on FirebaseException catch (e) {
       if (e.code == 'unavailable') {
-        throw const AppException('No connection. Check your internet and try again.');
+        throw const AppException(
+          'No connection. Check your internet and try again.',
+        );
       }
       if (e.code == 'permission-denied') {
         throw const AppException('This order can no longer be cancelled.');
       }
-      throw const AppException('We could not cancel this order. Please try again.');
+      throw const AppException(
+        'We could not cancel this order. Please try again.',
+      );
     }
   }
 
@@ -141,15 +152,22 @@ class OrderRepository {
   AppException _toAppException(Object error) {
     if (error is FirebaseException) {
       if (error.code == 'unavailable') {
-        return const AppException('No connection. Check your internet and try again.');
+        return const AppException(
+          'No connection. Check your internet and try again.',
+        );
       }
       if (error.code == 'permission-denied') {
-        return const AppException('We could not place your order. Please try again.');
+        return const AppException(
+          'We could not place your order. Please try again.',
+        );
       }
     }
-    return const AppException('We could not complete your order. Please try again.');
+    return const AppException(
+      'We could not complete your order. Please try again.',
+    );
   }
 }
 
-final orderRepositoryProvider =
-    Provider<OrderRepository>((ref) => OrderRepository());
+final orderRepositoryProvider = Provider<OrderRepository>(
+  (ref) => OrderRepository(),
+);

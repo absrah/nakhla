@@ -1,7 +1,7 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../core/theme/app_palette.dart';
 import '../../../core/utils/validators.dart';
@@ -9,8 +9,7 @@ import '../../../core/widgets/app_text_field.dart';
 import '../../../core/widgets/error_banner.dart';
 import '../../../core/widgets/loading_button.dart';
 import '../view_model/log_in_view_model.dart';
-import 'package:go_router/go_router.dart';      
-import '../../../core/router/app_routes.dart';  
+import '../../../core/router/app_routes.dart';
 
 class LogInScreen extends ConsumerStatefulWidget {
   const LogInScreen({super.key});
@@ -34,10 +33,9 @@ class _LogInScreenState extends ConsumerState<LogInScreen> {
   void _submit() {
     if (!_formKey.currentState!.validate()) return;
     FocusScope.of(context).unfocus();
-    ref.read(logInViewModelProvider.notifier).logIn(
-          email: _email.text,
-          password: _password.text,
-        );
+    ref
+        .read(logInViewModelProvider.notifier)
+        .logIn(email: _email.text, password: _password.text);
   }
 
   @override
@@ -77,8 +75,9 @@ class _LogInScreenState extends ConsumerState<LogInScreen> {
                   Text(
                     'Welcome back',
                     textAlign: TextAlign.center,
-                    style: text.headlineMedium
-                        ?.copyWith(fontWeight: FontWeight.w700),
+                    style: text.headlineMedium?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                   SizedBox(height: 4.h),
                   Text(
@@ -110,7 +109,7 @@ class _LogInScreenState extends ConsumerState<LogInScreen> {
                   Align(
                     alignment: AlignmentDirectional.centerStart,
                     child: TextButton(
-                    onPressed: () => context.push(AppRoutes.forgotPassword),
+                      onPressed: () => context.push(AppRoutes.forgotPassword),
                       child: const Text('Forgot password?'),
                     ),
                   ),
@@ -119,19 +118,30 @@ class _LogInScreenState extends ConsumerState<LogInScreen> {
                     ErrorBanner(state.error!),
                     SizedBox(height: 16.h),
                   ],
-                  LoadingButton(
-                    label: 'Log in',
-                    isLoading: state.isLoading,
-                    onPressed: _submit,
+                  ListenableBuilder(
+                    listenable: Listenable.merge([_email, _password]),
+                    builder: (context, _) {
+                      final valid =
+                          Validators.email(_email.text) == null &&
+                          Validators.password(_password.text) == null;
+                      return LoadingButton(
+                        label: 'Log in',
+                        isLoading: state.isLoading,
+                        onPressed: valid ? _submit : null,
+                      );
+                    },
                   ),
                   SizedBox(height: 12.h),
                   OutlinedButton(
                     onPressed: () {
-                      final from =
-                          GoRouterState.of(context).uri.queryParameters['from'];
-                      context.go(from == null
-                          ? AppRoutes.signUp
-                          : '${AppRoutes.signUp}?from=${Uri.encodeComponent(from)}');
+                      final from = GoRouterState.of(
+                        context,
+                      ).uri.queryParameters['from'];
+                      context.go(
+                        from == null
+                            ? AppRoutes.signUp
+                            : '${AppRoutes.signUp}?from=${Uri.encodeComponent(from)}',
+                      );
                     },
                     child: const Text('Sign up'),
                   ),

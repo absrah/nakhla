@@ -51,7 +51,10 @@ class AddressCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.w),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 8.w,
+                      vertical: 2.w,
+                    ),
                     decoration: BoxDecoration(
                       color: p.accent,
                       borderRadius: BorderRadius.circular(8.r),
@@ -68,7 +71,10 @@ class AddressCard extends StatelessWidget {
                   SizedBox(height: 8.w),
                   Text(
                     address.name,
-                    style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w600),
+                    style: TextStyle(
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                   SizedBox(height: 2.w),
                   Text(

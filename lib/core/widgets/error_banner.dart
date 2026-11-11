@@ -21,7 +21,9 @@ class ErrorBanner extends StatelessWidget {
         children: [
           Icon(Icons.error_outline, color: color, size: 20),
           const SizedBox(width: 8),
-          Expanded(child: Text(message, style: TextStyle(color: color))),
+          Expanded(
+            child: Text(message, style: TextStyle(color: color)),
+          ),
         ],
       ),
     );

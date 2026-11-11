@@ -49,7 +49,11 @@ class CheckoutScreen extends ConsumerWidget {
             : _Content(hasAddress: address != null),
       ),
       bottomNavigationBar: lines.hasValue && !summary.isEmpty
-          ? _ContinueBar(summary: summary, enabled: canContinue, hasAddress: address != null)
+          ? _ContinueBar(
+              summary: summary,
+              enabled: canContinue,
+              hasAddress: address != null,
+            )
           : null,
     );
   }
@@ -80,7 +84,8 @@ class _Content extends ConsumerWidget {
           _DeliveryTile(
             option: option,
             selected: option == selected,
-            onTap: () => ref.read(deliveryOptionProvider.notifier).select(option),
+            onTap: () =>
+                ref.read(deliveryOptionProvider.notifier).select(option),
           ),
           SizedBox(height: 10.w),
         ],
@@ -142,7 +147,10 @@ class _AddressSection extends ConsumerWidget {
               Expanded(
                 child: Text(
                   'Add a delivery address',
-                  style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w600),
+                  style: TextStyle(
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
               Icon(Icons.chevron_right, color: p.muted),
@@ -206,7 +214,9 @@ class _DeliveryTile extends StatelessWidget {
         child: Row(
           children: [
             Icon(
-              selected ? Icons.radio_button_checked : Icons.radio_button_unchecked,
+              selected
+                  ? Icons.radio_button_checked
+                  : Icons.radio_button_unchecked,
               size: 22.w,
               color: selected ? scheme.primary : p.muted,
             ),
@@ -217,7 +227,10 @@ class _DeliveryTile extends StatelessWidget {
                 children: [
                   Text(
                     option.title,
-                    style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w600),
+                    style: TextStyle(
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                   Text(
                     option.eta,
@@ -236,7 +249,6 @@ class _DeliveryTile extends StatelessWidget {
     );
   }
 }
-
 
 class _ContinueBar extends ConsumerWidget {
   const _ContinueBar({

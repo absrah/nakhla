@@ -18,14 +18,18 @@ enum OrderStatus {
     return values.firstWhere(
       (status) => status.value == value,
       orElse: () => placed,
-      
     );
-    
   }
-
 
   /// Still on its way (the "Active" tab).
   bool get isActive => this != delivered && this != cancelled;
-    /// The steps of a normal delivery in order (cancelled is not one of them).
-  static const List<OrderStatus> timeline = [placed, packed, shipped, outForDelivery, delivered];
+
+  /// The steps of a normal delivery in order (cancelled is not one of them).
+  static const List<OrderStatus> timeline = [
+    placed,
+    packed,
+    shipped,
+    outForDelivery,
+    delivered,
+  ];
 }

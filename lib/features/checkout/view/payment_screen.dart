@@ -71,7 +71,7 @@ class _PaymentScreenState extends ConsumerState<PaymentScreen> {
     final canPlace =
         address != null && !summary.isEmpty && !summary.hasUnavailable;
 
-        // Say exactly what is wrong with the cart, if anything.
+    // Say exactly what is wrong with the cart, if anything.
     String? stockMessage;
     for (final line in lines.value ?? const <CartLine>[]) {
       if (line.available) continue;
@@ -241,7 +241,10 @@ class _MethodTile extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w600),
+                    style: TextStyle(
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                   Text(
                     subtitle,
@@ -264,7 +267,9 @@ class _MethodTile extends StatelessWidget {
               )
             else
               Icon(
-                selected ? Icons.radio_button_checked : Icons.radio_button_unchecked,
+                selected
+                    ? Icons.radio_button_checked
+                    : Icons.radio_button_unchecked,
                 size: 22.w,
                 color: selected ? scheme.primary : p.muted,
               ),
@@ -314,10 +319,7 @@ class _Recap extends StatelessWidget {
         children: [
           row(Icons.location_on_outlined, where),
           SizedBox(height: 10.w),
-          row(
-            Icons.local_shipping_outlined,
-            '${option.title} · ${option.eta}',
-          ),
+          row(Icons.local_shipping_outlined, '${option.title} · ${option.eta}'),
         ],
       ),
     );
@@ -363,10 +365,7 @@ class _PlaceBar extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (error != null) ...[
-              ErrorBanner(error!),
-              SizedBox(height: 10.w),
-            ],
+            if (error != null) ...[ErrorBanner(error!), SizedBox(height: 10.w)],
             if (hint != null)
               Padding(
                 padding: EdgeInsets.only(bottom: 8.w),

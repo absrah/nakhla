@@ -29,5 +29,5 @@ class ForgotPasswordViewModel extends Notifier<AuthActionState> {
 
 final forgotPasswordViewModelProvider =
     NotifierProvider.autoDispose<ForgotPasswordViewModel, AuthActionState>(
-  ForgotPasswordViewModel.new,
-);
+      ForgotPasswordViewModel.new,
+    );

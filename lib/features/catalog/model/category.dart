@@ -47,9 +47,9 @@ class Category {
   }
 
   Map<String, dynamic> toMap() => {
-        'name': name,
-        'nameAr': nameAr,
-        'order': order,
-        'subcategories': subcategories.map((s) => s.toMap()).toList(),
-      };
+    'name': name,
+    'nameAr': nameAr,
+    'order': order,
+    'subcategories': subcategories.map((s) => s.toMap()).toList(),
+  };
 }

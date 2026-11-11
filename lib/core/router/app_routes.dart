@@ -19,17 +19,18 @@ abstract final class AppRoutes {
   static const product = '/product/:id';
   static const category = '/category/:id';
 
-    // Checkout and addresses (also opened on top of the tabs).
+  // Checkout and addresses (also opened on top of the tabs).
   static const checkout = '/checkout';
   static const addresses = '/addresses';
   static const addressesPick = '/addresses?pick=1'; // opened from checkout
   static const addressForm = '/addresses/edit';
 
-    static const payment = '/checkout/payment';
+  static const payment = '/checkout/payment';
   static const orderPlacedBase = '/order-placed';
   static const orderPlaced = '/order-placed/:id';
   static String orderPlacedPath(String id) => '$orderPlacedBase/$id';
-    static const orders = '/orders';
+  static const orders = '/orders';
+  static const editProfile = '/account/edit';
   static const orderDetail = '/orders/:id';
   static String orderPath(String id) => '/orders/$id';
 

@@ -28,16 +28,22 @@ class OrderViewModel {
 
     if (lines.isEmpty) throw const AppException('Your cart is empty.');
     if (lines.length > maxLines) {
-      throw AppException('You can order up to $maxLines different products at once.');
+      throw AppException(
+        'You can order up to $maxLines different products at once.',
+      );
     }
     if (lines.any((line) => !line.available)) {
-      throw const AppException('Some items are no longer available. Fix your cart first.');
+      throw const AppException(
+        'Some items are no longer available. Fix your cart first.',
+      );
     }
     if (address == null) {
       throw const AppException('Choose a delivery address first.');
     }
 
-    return _ref.read(orderRepositoryProvider).placeOrder(
+    return _ref
+        .read(orderRepositoryProvider)
+        .placeOrder(
           uid: user.uid,
           lines: lines,
           address: address,
@@ -46,12 +52,13 @@ class OrderViewModel {
         );
   }
 
-        Future<void> cancelOrder(String orderId) async {
+  Future<void> cancelOrder(String orderId) async {
     final user = _ref.read(authStateProvider).value;
     if (user == null) throw const AppException('Log in to manage your orders.');
     await _ref.read(orderRepositoryProvider).cancelOrder(orderId);
   }
 }
 
-final orderViewModelProvider =
-    Provider<OrderViewModel>((ref) => OrderViewModel(ref));
+final orderViewModelProvider = Provider<OrderViewModel>(
+  (ref) => OrderViewModel(ref),
+);

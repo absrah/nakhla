@@ -28,7 +28,9 @@ class CartScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(summary.isEmpty ? 'My cart' : 'My cart (${summary.itemCount})'),
+        title: Text(
+          summary.isEmpty ? 'My cart' : 'My cart (${summary.itemCount})',
+        ),
       ),
       body: lines.when(
         loading: () => const LoadingView(),
@@ -97,9 +99,7 @@ class _EmptyCart extends StatelessWidget {
             SizedBox(height: 24.w),
             FilledButton(
               onPressed: () => context.go(AppRoutes.home),
-              style: FilledButton.styleFrom(
-                minimumSize: Size(200.w, 52.w),
-              ),
+              style: FilledButton.styleFrom(minimumSize: Size(200.w, 52.w)),
               child: const Text('Start shopping'),
             ),
           ],
@@ -203,7 +203,8 @@ class _CartItemCard extends ConsumerWidget {
                         buttonSize: 32,
                         decreaseIsDelete: line.quantity == 1,
                         canIncrease:
-                            product.inStock && line.quantity < product.maxOrderQuantity,
+                            product.inStock &&
+                            line.quantity < product.maxOrderQuantity,
                         onDecrease: () => _run(
                           context,
                           () => line.quantity == 1
@@ -271,7 +272,10 @@ class _SummaryCard extends StatelessWidget {
       child: Column(
         children: [
           row('Subtotal', formatSar(summary.subtotal)),
-          row('Delivery', summary.delivery == 0 ? 'Free' : formatSar(summary.delivery)),
+          row(
+            'Delivery',
+            summary.delivery == 0 ? 'Free' : formatSar(summary.delivery),
+          ),
           if (summary.savings > 0)
             row('You save', formatSar(summary.savings), color: p.link),
           Padding(

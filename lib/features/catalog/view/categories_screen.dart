@@ -138,7 +138,10 @@ class _TypesPane extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final p = context.palette;
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final count = ref.watch(productsByCategoryProvider(category.id)).value?.length;
+    final count = ref
+        .watch(productsByCategoryProvider(category.id))
+        .value
+        ?.length;
 
     return SingleChildScrollView(
       padding: EdgeInsets.all(16.w),
@@ -233,8 +236,9 @@ class _TypesPane extends ConsumerWidget {
                           height: 28.w,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: Colors.white
-                                .withValues(alpha: isDark ? 0.10 : 0.65),
+                            color: Colors.white.withValues(
+                              alpha: isDark ? 0.10 : 0.65,
+                            ),
                           ),
                         ),
                         SizedBox(height: 8.w),

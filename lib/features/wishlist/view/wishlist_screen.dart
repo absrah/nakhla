@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
-/// TEMPORARY placeholder. The real wishlist is built later in Phase 2/3.
+import '../../../core/widgets/state_views.dart';
+
+/// The Wishlist tab. Saving favourites is a stretch feature after the
+/// deadline, so for now the tab says so instead of showing a blank page.
 class WishlistScreen extends StatelessWidget {
   const WishlistScreen({super.key});
 
@@ -8,7 +11,10 @@ class WishlistScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Wishlist')),
-      body: const Center(child: Text('Wishlist placeholder')),
+      body: const EmptyView(
+        icon: Icons.favorite_border,
+        message: 'Saving favourites is coming soon.',
+      ),
     );
   }
 }

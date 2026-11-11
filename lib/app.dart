@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'core/router/app_router.dart';
 import 'core/theme/app_theme.dart';
-import 'core/theme/theme_mode_notifier.dart';
+import 'core/theme/theme_mode_provider.dart';
 import 'features/cart/view/price_change_listener.dart';
 
 class NakhlaApp extends ConsumerWidget {
@@ -14,25 +14,23 @@ class NakhlaApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(routerProvider);
+    final themeMode = ref.watch(themeModeProvider);
 
     // 390 x 844 is the size the screens were designed at.
     return ScreenUtilInit(
       designSize: const Size(390, 844),
       minTextAdapt: true,
       splitScreenMode: true,
-      builder: (context, child) => ValueListenableBuilder<ThemeMode>(
-        valueListenable: themeModeNotifier,
-        builder: (context, mode, _) => MaterialApp.router(
-          title: 'Nakhla',
-          debugShowCheckedModeBanner: false,
-          theme: AppTheme.light,
-          darkTheme: AppTheme.dark,
-          themeMode: mode,
-          routerConfig: router,
-          scrollBehavior: const _AppScrollBehavior(),
-          builder: (context, child) =>
-          PriceChangeListener(child: child ?? const SizedBox.shrink()),
-        ),
+      builder: (context, child) => MaterialApp.router(
+        title: 'Nakhla',
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme.light,
+        darkTheme: AppTheme.dark,
+        themeMode: themeMode,
+        routerConfig: router,
+        scrollBehavior: const _AppScrollBehavior(),
+        builder: (context, child) =>
+            PriceChangeListener(child: child ?? const SizedBox.shrink()),
       ),
     );
   }
@@ -45,7 +43,7 @@ class _AppScrollBehavior extends MaterialScrollBehavior {
 
   @override
   Set<PointerDeviceKind> get dragDevices => {
-        ...super.dragDevices,
-        PointerDeviceKind.mouse,
-      };
+    ...super.dragDevices,
+    PointerDeviceKind.mouse,
+  };
 }

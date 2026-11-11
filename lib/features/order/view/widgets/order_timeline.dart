@@ -53,15 +53,15 @@ class OrderTimeline extends StatelessWidget {
                   child: done
                       ? Icon(Icons.check, size: 15.w, color: p.onAccent)
                       : isCurrent
-                          ? Container(
-                              width: 8.w,
-                              height: 8.w,
-                              decoration: BoxDecoration(
-                                color: p.onAccent,
-                                shape: BoxShape.circle,
-                              ),
-                            )
-                          : null,
+                      ? Container(
+                          width: 8.w,
+                          height: 8.w,
+                          decoration: BoxDecoration(
+                            color: p.onAccent,
+                            shape: BoxShape.circle,
+                          ),
+                        )
+                      : null,
                 ),
                 if (!isLast)
                   Container(

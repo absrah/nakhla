@@ -15,8 +15,8 @@ class DeliveryOptionViewModel extends Notifier<DeliveryOption> {
 
 final deliveryOptionProvider =
     NotifierProvider.autoDispose<DeliveryOptionViewModel, DeliveryOption>(
-  DeliveryOptionViewModel.new,
-);
+      DeliveryOptionViewModel.new,
+    );
 
 /// Cart subtotal + the delivery fee of the picked option.
 final checkoutTotalsProvider = Provider.autoDispose<CheckoutTotals>((ref) {

@@ -5,14 +5,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/errors/app_exception.dart';
 import 'app_user.dart';
 import 'auth_error_mapper.dart';
+import 'dart:async';
 
 /// The only place in the app that talks to Firebase Auth for accounts.
 /// Every method either works or throws an [AppException] with a message
 /// that is safe to show to the user.
 class AuthRepository {
   AuthRepository({FirebaseAuth? auth, FirebaseFirestore? firestore})
-      : _auth = auth ?? FirebaseAuth.instance,
-        _db = firestore ?? FirebaseFirestore.instance;
+    : _auth = auth ?? FirebaseAuth.instance,
+      _db = firestore ?? FirebaseFirestore.instance;
 
   final FirebaseAuth _auth;
   final FirebaseFirestore _db;
@@ -27,10 +28,7 @@ class AuthRepository {
 
   User? get currentUser => _auth.currentUser;
 
-  Future<void> logIn({
-    required String email,
-    required String password,
-  }) async {
+  Future<void> logIn({required String email, required String password}) async {
     try {
       await _auth.signInWithEmailAndPassword(
         email: email.trim(),
@@ -42,6 +40,11 @@ class AuthRepository {
   }
 
   /// Creates the account, then saves the profile at users/{uid}.
+  /// Creates the account, then saves the profile at users/{uid}.
+  ///
+  /// Once the account exists the shopper is logged in, so a failed profile
+  /// save is NOT shown as an error: the profile repository notices the
+  /// missing document later and creates it again (see watchProfile).
   Future<void> signUp({
     required String name,
     required String email,
@@ -54,7 +57,11 @@ class AuthRepository {
         password: password,
       );
       final user = credential.user!;
-      await user.updateDisplayName(name.trim());
+      try {
+        await user.updateDisplayName(name.trim());
+      } catch (_) {
+        // Only a copy of the name; the profile document is what counts.
+      }
 
       final profile = AppUser(
         uid: user.uid,
@@ -62,17 +69,20 @@ class AuthRepository {
         email: email.trim(),
         phone: phone.trim(),
       );
-      await _userDoc(user.uid).set({
-        ...profile.toMap(),
-        'createdAt': FieldValue.serverTimestamp(),
-      });
+      try {
+        await _userDoc(user.uid)
+            .set({
+              ...profile.toMap(),
+              'createdAt': FieldValue.serverTimestamp(),
+            })
+            .timeout(const Duration(seconds: 15));
+      } on TimeoutException {
+        // Offline: the write waits on the phone and is sent once online.
+      } on FirebaseException {
+        // Saved later by ProfileRepository.watchProfile (self-heal).
+      }
     } on FirebaseAuthException catch (e) {
       throw authExceptionFrom(e);
-    } on FirebaseException {
-      // The account exists but the profile could not be saved.
-      throw const AppException(
-        'Your account was created, but we could not save your profile.',
-      );
     }
   }
 

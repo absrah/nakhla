@@ -52,7 +52,10 @@ class DealCard extends StatelessWidget {
               children: [
                 Text(
                   formatSar(product.price),
-                  style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w700),
+                  style: TextStyle(
+                    fontSize: 17.sp,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
                 if (product.hasDiscount)
                   Text(

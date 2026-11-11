@@ -21,8 +21,8 @@ class SelectedAddressViewModel extends Notifier<String?> {
 
 final selectedAddressIdProvider =
     NotifierProvider<SelectedAddressViewModel, String?>(
-  SelectedAddressViewModel.new,
-);
+      SelectedAddressViewModel.new,
+    );
 
 /// The address that will be used: the picked one, otherwise the oldest one.
 /// Null when the shopper has no address yet.

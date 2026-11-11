@@ -29,7 +29,9 @@ class AddressFormScreen extends ConsumerWidget {
     if (addressId == null) {
       body = const _AddressForm();
     } else {
-      body = ref.watch(addressesProvider).when(
+      body = ref
+          .watch(addressesProvider)
+          .when(
             loading: () => const LoadingView(),
             error: (error, _) => ErrorView(
               error: error,
@@ -37,7 +39,8 @@ class AddressFormScreen extends ConsumerWidget {
             ),
             data: (list) {
               for (final address in list) {
-                if (address.id == addressId) return _AddressForm(existing: address);
+                if (address.id == addressId)
+                  return _AddressForm(existing: address);
               }
               return const EmptyView(
                 icon: Icons.location_off_outlined,
@@ -164,7 +167,10 @@ class _AddressFormState extends ConsumerState<_AddressForm> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text('Label', style: TextStyle(fontSize: 14.sp, color: p.muted)),
+            Text(
+              'Label',
+              style: TextStyle(fontSize: 14.sp, color: p.muted),
+            ),
             SizedBox(height: 8.w),
             Wrap(
               spacing: 8.w,
@@ -179,8 +185,9 @@ class _AddressFormState extends ConsumerState<_AddressForm> {
                       fontWeight: FontWeight.w600,
                       color: _label == label ? p.onAccent : null,
                     ),
-                    onSelected:
-                        _saving ? null : (_) => setState(() => _label = label),
+                    onSelected: _saving
+                        ? null
+                        : (_) => setState(() => _label = label),
                   ),
               ],
             ),
@@ -225,7 +232,8 @@ class _AddressFormState extends ConsumerState<_AddressForm> {
             AppTextField(
               label: 'Street and building',
               controller: _street,
-              validator: (v) => Validators.required(v, 'Enter the street and building'),
+              validator: (v) =>
+                  Validators.required(v, 'Enter the street and building'),
               textInputAction: TextInputAction.next,
               autofillHints: const [AutofillHints.streetAddressLine1],
               enabled: !_saving,
@@ -246,10 +254,29 @@ class _AddressFormState extends ConsumerState<_AddressForm> {
               ErrorBanner(_error!),
               SizedBox(height: 16.w),
             ],
-            LoadingButton(
-              label: 'Save address',
-              isLoading: _saving,
-              onPressed: _save,
+            ListenableBuilder(
+              listenable: Listenable.merge([
+                _name,
+                _phone,
+                _city,
+                _district,
+                _street,
+                _postal,
+              ]),
+              builder: (context, _) {
+                final valid =
+                    Validators.name(_name.text) == null &&
+                    Validators.requiredPhone(_phone.text) == null &&
+                    Validators.required(_city.text, 'x') == null &&
+                    Validators.required(_district.text, 'x') == null &&
+                    Validators.required(_street.text, 'x') == null &&
+                    Validators.postalCode(_postal.text) == null;
+                return LoadingButton(
+                  label: 'Save address',
+                  isLoading: _saving,
+                  onPressed: valid ? _save : null,
+                );
+              },
             ),
           ],
         ),

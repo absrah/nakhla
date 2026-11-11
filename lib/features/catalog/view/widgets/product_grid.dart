@@ -24,7 +24,8 @@ class SliverProductGrid extends StatelessWidget {
             mainAxisExtent: cardWidth + ProductCard.belowImage,
           ),
           itemCount: products.length,
-          itemBuilder: (context, index) => ProductCard(product: products[index]),
+          itemBuilder: (context, index) =>
+              ProductCard(product: products[index]),
         );
       },
     );

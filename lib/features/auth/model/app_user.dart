@@ -35,11 +35,11 @@ class AppUser {
   /// createdAt is left out on purpose: the repository sets it once, with the
   /// server's clock, when the account is created.
   Map<String, dynamic> toMap() => {
-        'name': name,
-        'email': email,
-        'phone': phone,
-        'language': language,
-      };
+    'name': name,
+    'email': email,
+    'phone': phone,
+    'language': language,
+  };
 
   AppUser copyWith({String? name, String? phone, String? language}) {
     return AppUser(

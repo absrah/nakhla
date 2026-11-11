@@ -9,6 +9,7 @@ import '../../../../core/utils/formatters.dart';
 import '../../../cart/view/add_to_cart.dart';
 import '../../model/product.dart';
 import 'product_image.dart';
+import '../../../cart/view_model/cart_providers.dart';
 
 /// Product card for the 2-column grids: image, name, rating, price and the
 /// lime "Add to cart" button. Tapping the card opens the product.
@@ -24,6 +25,12 @@ class ProductCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final p = context.palette;
     final text = Theme.of(context).textTheme;
+    // Grey once the cart already holds the most that may be bought.
+    final inCart = ref.watch(cartQuantityProvider(product.id));
+    final canAdd = product.inStock && inCart < product.maxOrderQuantity;
+    final label = !product.inStock
+        ? 'Out of stock'
+        : (canAdd ? 'Add to cart' : 'Max in cart');
 
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
@@ -87,14 +94,9 @@ class ProductCard extends ConsumerWidget {
             height: 44.w,
             width: double.infinity,
             child: FilledButton.icon(
-              onPressed: product.inStock
-                  ? () => addToCart(context, ref, product)
-                  : null,
-              icon: Icon(Icons.add, size: 18.w),
-              label: Text(
-                product.inStock ? 'Add to cart' : 'Out of stock',
-                style: TextStyle(fontSize: 15.sp),
-              ),
+              onPressed: canAdd ? () => addToCart(context, ref, product) : null,
+              icon: Icon(canAdd ? Icons.add : Icons.block, size: 18.w),
+              label: Text(label, style: TextStyle(fontSize: 15.sp)),
               style: FilledButton.styleFrom(
                 minimumSize: Size.zero,
                 padding: EdgeInsets.zero,

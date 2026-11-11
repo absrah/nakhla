@@ -37,7 +37,7 @@ class Product {
   /// Most pieces one order line may hold: what is in stock, but never more
   /// than 10 (the cart rules in Firestore enforce the same limit).
   int get maxOrderQuantity => stock < 10 ? stock : 10;
-  
+
   bool get hasDiscount => oldPrice != null && oldPrice! > price;
 
   /// Whole-number percent off, for the sale tag (e.g. 26).
@@ -61,23 +61,25 @@ class Product {
       stock: (map['stock'] as num?)?.toInt() ?? 0,
       description: map['description'] as String? ?? '',
       descriptionAr: map['descriptionAr'] as String? ?? '',
-      keywords: List<String>.from(map['keywords'] as List<dynamic>? ?? const []),
+      keywords: List<String>.from(
+        map['keywords'] as List<dynamic>? ?? const [],
+      ),
     );
   }
 
   Map<String, dynamic> toMap() => {
-        'name': name,
-        'nameAr': nameAr,
-        'brand': brand,
-        'categoryId': categoryId,
-        'subcategoryId': subcategoryId,
-        'price': price,
-        'oldPrice': oldPrice,
-        'rating': rating,
-        'reviewCount': reviewCount,
-        'stock': stock,
-        'description': description,
-        'descriptionAr': descriptionAr,
-        'keywords': keywords,
-      };
+    'name': name,
+    'nameAr': nameAr,
+    'brand': brand,
+    'categoryId': categoryId,
+    'subcategoryId': subcategoryId,
+    'price': price,
+    'oldPrice': oldPrice,
+    'rating': rating,
+    'reviewCount': reviewCount,
+    'stock': stock,
+    'description': description,
+    'descriptionAr': descriptionAr,
+    'keywords': keywords,
+  };
 }

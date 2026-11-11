@@ -10,7 +10,7 @@ import 'address.dart';
 /// users/{uid}/addresses/{addressId}.
 class AddressRepository {
   AddressRepository({FirebaseFirestore? firestore})
-      : _db = firestore ?? FirebaseFirestore.instance;
+    : _db = firestore ?? FirebaseFirestore.instance;
 
   final FirebaseFirestore _db;
 
@@ -26,8 +26,9 @@ class AddressRepository {
     return _col(uid)
         .snapshots()
         .map((snap) {
-          final list =
-              snap.docs.map((d) => Address.fromMap(d.id, d.data())).toList();
+          final list = snap.docs
+              .map((d) => Address.fromMap(d.id, d.data()))
+              .toList();
           list.sort((a, b) {
             final x = a.createdAt;
             final y = b.createdAt;
@@ -57,10 +58,9 @@ class AddressRepository {
 
   Future<void> update(String uid, Address address) async {
     try {
-      await _col(uid)
-          .doc(address.id)
-          .update(address.toMap())
-          .timeout(_writeTimeout);
+      await _col(
+        uid,
+      ).doc(address.id).update(address.toMap()).timeout(_writeTimeout);
     } on FirebaseException catch (e) {
       throw _toAppException(e);
     } on TimeoutException {
@@ -87,11 +87,16 @@ class AddressRepository {
       );
     }
     if (error is FirebaseException && error.code == 'unavailable') {
-      return const AppException('No connection. Check your internet and try again.');
+      return const AppException(
+        'No connection. Check your internet and try again.',
+      );
     }
-    return const AppException('We could not save your address. Please try again.');
+    return const AppException(
+      'We could not save your address. Please try again.',
+    );
   }
 }
 
-final addressRepositoryProvider =
-    Provider<AddressRepository>((ref) => AddressRepository());
+final addressRepositoryProvider = Provider<AddressRepository>(
+  (ref) => AddressRepository(),
+);

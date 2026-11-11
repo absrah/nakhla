@@ -18,25 +18,32 @@ final productsProvider = StreamProvider<List<Product>>((ref) {
 /// Products of one category: ref.watch(productsByCategoryProvider('fashion')).
 final productsByCategoryProvider =
     Provider.family<AsyncValue<List<Product>>, String>((ref, categoryId) {
-  return ref
-      .watch(productsProvider)
-      .whenData((all) => all.where((p) => p.categoryId == categoryId).toList());
-});
+      return ref
+          .watch(productsProvider)
+          .whenData(
+            (all) => all.where((p) => p.categoryId == categoryId).toList(),
+          );
+    });
 
 /// A category plus one of its types, e.g. electronics + phones.
 typedef CategoryTypeKey = ({String categoryId, String subcategoryId});
 
 final productsBySubcategoryProvider =
     Provider.family<AsyncValue<List<Product>>, CategoryTypeKey>((ref, key) {
-  return ref.watch(productsByCategoryProvider(key.categoryId)).whenData(
-        (list) =>
-            list.where((p) => p.subcategoryId == key.subcategoryId).toList(),
-      );
-});
+      return ref
+          .watch(productsByCategoryProvider(key.categoryId))
+          .whenData(
+            (list) => list
+                .where((p) => p.subcategoryId == key.subcategoryId)
+                .toList(),
+          );
+    });
 
 /// One product by id, or null if it does not exist (for the detail screen).
-final productByIdProvider =
-    Provider.family<AsyncValue<Product?>, String>((ref, id) {
+final productByIdProvider = Provider.family<AsyncValue<Product?>, String>((
+  ref,
+  id,
+) {
   return ref.watch(productsProvider).whenData((all) {
     for (final p in all) {
       if (p.id == id) return p;

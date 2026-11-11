@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../theme/app_palette.dart';
 
-/// The main lime button. While [isLoading] it shows a spinner and
-/// ignores taps, but keeps its lime color (a greyed button looks broken).
+/// The main lime button.
+/// - [onPressed] null  -> greyed out (the theme's disabled colours).
+/// - [isLoading] true  -> spinner, taps ignored, stays lime.
 class LoadingButton extends StatelessWidget {
   const LoadingButton({
     super.key,
@@ -13,7 +14,7 @@ class LoadingButton extends StatelessWidget {
   });
 
   final String label;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final bool isLoading;
 
   @override

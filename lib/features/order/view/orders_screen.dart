@@ -41,15 +41,24 @@ class OrdersScreen extends ConsumerWidget {
           data: (all) => TabBarView(
             children: [
               _OrderList(
-                orders: [for (final o in all) if (o.status.isActive) o],
+                orders: [
+                  for (final o in all)
+                    if (o.status.isActive) o,
+                ],
                 empty: 'You have no active orders.',
               ),
               _OrderList(
-                orders: [for (final o in all) if (o.status == OrderStatus.delivered) o],
+                orders: [
+                  for (final o in all)
+                    if (o.status == OrderStatus.delivered) o,
+                ],
                 empty: 'No delivered orders yet.',
               ),
               _OrderList(
-                orders: [for (final o in all) if (o.status == OrderStatus.cancelled) o],
+                orders: [
+                  for (final o in all)
+                    if (o.status == OrderStatus.cancelled) o,
+                ],
                 empty: 'No cancelled orders.',
               ),
             ],

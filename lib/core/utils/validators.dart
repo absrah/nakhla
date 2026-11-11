@@ -40,7 +40,7 @@ abstract final class Validators {
     return null;
   }
 
-    /// Required text field (city, district, street...).
+  /// Required text field (city, district, street...).
   static String? required(String? value, String message) =>
       (value?.trim().isEmpty ?? true) ? message : null;
 

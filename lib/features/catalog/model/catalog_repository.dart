@@ -10,7 +10,7 @@ import 'product.dart';
 /// console, the app updates by itself.
 class CatalogRepository {
   CatalogRepository({FirebaseFirestore? firestore})
-      : _db = firestore ?? FirebaseFirestore.instance;
+    : _db = firestore ?? FirebaseFirestore.instance;
 
   final FirebaseFirestore _db;
 
@@ -20,8 +20,10 @@ class CatalogRepository {
         .collection('categories')
         .orderBy('order')
         .snapshots()
-        .map((snap) =>
-            snap.docs.map((d) => Category.fromMap(d.id, d.data())).toList())
+        .map(
+          (snap) =>
+              snap.docs.map((d) => Category.fromMap(d.id, d.data())).toList(),
+        )
         .handleError(_rethrowAsAppException);
   }
 
@@ -33,8 +35,9 @@ class CatalogRepository {
         .collection('products')
         .snapshots()
         .map((snap) {
-          final list =
-              snap.docs.map((d) => Product.fromMap(d.id, d.data())).toList();
+          final list = snap.docs
+              .map((d) => Product.fromMap(d.id, d.data()))
+              .toList();
           list.sort((a, b) => a.name.compareTo(b.name));
           return list;
         })
@@ -44,15 +47,20 @@ class CatalogRepository {
   void _rethrowAsAppException(Object error) {
     if (error is FirebaseException) {
       if (error.code == 'permission-denied') {
-        throw const AppException('You do not have permission to see the catalog.');
+        throw const AppException(
+          'You do not have permission to see the catalog.',
+        );
       }
       if (error.code == 'unavailable') {
-        throw const AppException('No connection. Check your internet and try again.');
+        throw const AppException(
+          'No connection. Check your internet and try again.',
+        );
       }
     }
     throw const AppException('Could not load the catalog.');
   }
 }
 
-final catalogRepositoryProvider =
-    Provider<CatalogRepository>((ref) => CatalogRepository());
+final catalogRepositoryProvider = Provider<CatalogRepository>(
+  (ref) => CatalogRepository(),
+);

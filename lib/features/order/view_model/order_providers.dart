@@ -12,8 +12,10 @@ final ordersProvider = StreamProvider<List<Order>>((ref) {
 });
 
 /// One order by id, or null if it does not exist.
-final orderByIdProvider =
-    Provider.family<AsyncValue<Order?>, String>((ref, id) {
+final orderByIdProvider = Provider.family<AsyncValue<Order?>, String>((
+  ref,
+  id,
+) {
   return ref.watch(ordersProvider).whenData((all) {
     for (final order in all) {
       if (order.id == id) return order;

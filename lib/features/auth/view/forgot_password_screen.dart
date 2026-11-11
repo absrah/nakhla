@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../core/theme/app_palette.dart';
 import '../../../core/utils/validators.dart';
@@ -8,8 +9,7 @@ import '../../../core/widgets/app_text_field.dart';
 import '../../../core/widgets/error_banner.dart';
 import '../../../core/widgets/loading_button.dart';
 import '../view_model/forgot_password_view_model.dart';
-import 'package:go_router/go_router.dart';      
-import '../../../core/router/app_routes.dart';  
+import '../../../core/router/app_routes.dart';
 
 class ForgotPasswordScreen extends ConsumerStatefulWidget {
   const ForgotPasswordScreen({super.key});
@@ -59,8 +59,9 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                       SizedBox(height: 16.h),
                       Text(
                         'Forgot your password?',
-                        style: text.headlineMedium
-                            ?.copyWith(fontWeight: FontWeight.w700),
+                        style: text.headlineMedium?.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                       SizedBox(height: 4.h),
                       Text(
@@ -84,10 +85,15 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                         ErrorBanner(state.error!),
                         SizedBox(height: 16.h),
                       ],
-                      LoadingButton(
-                        label: 'Send reset link',
-                        isLoading: state.isLoading,
-                        onPressed: _submit,
+                      ListenableBuilder(
+                        listenable: _email,
+                        builder: (context, _) => LoadingButton(
+                          label: 'Send reset link',
+                          isLoading: state.isLoading,
+                          onPressed: Validators.email(_email.text) == null
+                              ? _submit
+                              : null,
+                        ),
                       ),
                       SizedBox(height: 8.h),
                       TextButton(

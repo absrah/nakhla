@@ -17,12 +17,9 @@ class SignUpViewModel extends Notifier<AuthActionState> {
     if (state.isLoading) return;
     state = const AuthActionState(isLoading: true);
     try {
-      await ref.read(authRepositoryProvider).signUp(
-            name: name,
-            email: email,
-            password: password,
-            phone: phone,
-          );
+      await ref
+          .read(authRepositoryProvider)
+          .signUp(name: name, email: email, password: password, phone: phone);
       if (!ref.mounted) return;
       state = const AuthActionState(done: true);
     } on AppException catch (e) {
@@ -39,5 +36,5 @@ class SignUpViewModel extends Notifier<AuthActionState> {
 
 final signUpViewModelProvider =
     NotifierProvider.autoDispose<SignUpViewModel, AuthActionState>(
-  SignUpViewModel.new,
-);
+      SignUpViewModel.new,
+    );

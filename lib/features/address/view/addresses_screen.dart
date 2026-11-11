@@ -70,8 +70,9 @@ class AddressesScreen extends ConsumerWidget {
                     IconButton(
                       tooltip: 'Edit',
                       icon: const Icon(Icons.edit_outlined),
-                      onPressed: () => context
-                          .push(AppRoutes.addressFormPath(id: address.id)),
+                      onPressed: () => context.push(
+                        AppRoutes.addressFormPath(id: address.id),
+                      ),
                     ),
                     IconButton(
                       tooltip: 'Delete',

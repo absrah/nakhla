@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../core/theme/app_palette.dart';
 import '../../../core/utils/validators.dart';
@@ -8,8 +9,7 @@ import '../../../core/widgets/app_text_field.dart';
 import '../../../core/widgets/error_banner.dart';
 import '../../../core/widgets/loading_button.dart';
 import '../view_model/sign_up_view_model.dart';
-import 'package:go_router/go_router.dart';      
-import '../../../core/router/app_routes.dart';  
+import '../../../core/router/app_routes.dart';
 
 class SignUpScreen extends ConsumerStatefulWidget {
   const SignUpScreen({super.key});
@@ -39,7 +39,9 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   void _submit() {
     if (!_formKey.currentState!.validate()) return;
     FocusScope.of(context).unfocus();
-    ref.read(signUpViewModelProvider.notifier).signUp(
+    ref
+        .read(signUpViewModelProvider.notifier)
+        .signUp(
           name: _name.text,
           email: _email.text,
           password: _password.text,
@@ -52,8 +54,6 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
     final state = ref.watch(signUpViewModelProvider);
     final p = context.palette;
     final text = Theme.of(context).textTheme;
-
-
 
     return Scaffold(
       appBar: AppBar(title: const Text('Sign up')),
@@ -69,8 +69,9 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                   SizedBox(height: 16.h),
                   Text(
                     'Join Nakhla',
-                    style: text.headlineMedium
-                        ?.copyWith(fontWeight: FontWeight.w700),
+                    style: text.headlineMedium?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                   SizedBox(height: 4.h),
                   Text(
@@ -133,19 +134,43 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                     ErrorBanner(state.error!),
                     SizedBox(height: 16.h),
                   ],
-                  LoadingButton(
-                    label: 'Sign up',
-                    isLoading: state.isLoading,
-                    onPressed: _submit,
+                  ListenableBuilder(
+                    listenable: Listenable.merge([
+                      _name,
+                      _email,
+                      _phone,
+                      _password,
+                      _confirm,
+                    ]),
+                    builder: (context, _) {
+                      final valid =
+                          Validators.name(_name.text) == null &&
+                          Validators.email(_email.text) == null &&
+                          Validators.phone(_phone.text) == null &&
+                          Validators.password(_password.text) == null &&
+                          Validators.confirmPassword(
+                                _confirm.text,
+                                _password.text,
+                              ) ==
+                              null;
+                      return LoadingButton(
+                        label: 'Sign up',
+                        isLoading: state.isLoading,
+                        onPressed: valid ? _submit : null,
+                      );
+                    },
                   ),
                   SizedBox(height: 8.h),
                   TextButton(
                     onPressed: () {
-                      final from =
-                          GoRouterState.of(context).uri.queryParameters['from'];
-                      context.go(from == null
-                          ? AppRoutes.login
-                          : '${AppRoutes.login}?from=${Uri.encodeComponent(from)}');
+                      final from = GoRouterState.of(
+                        context,
+                      ).uri.queryParameters['from'];
+                      context.go(
+                        from == null
+                            ? AppRoutes.login
+                            : '${AppRoutes.login}?from=${Uri.encodeComponent(from)}',
+                      );
                     },
                     child: const Text('Already have an account? Log in'),
                   ),

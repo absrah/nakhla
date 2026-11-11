@@ -28,9 +28,12 @@ class ProductListScreen extends ConsumerWidget {
     if (dealsOnly) {
       products = ref.watch(dealsProvider);
     } else if (categoryId != null && subcategoryId != null) {
-      products = ref.watch(productsBySubcategoryProvider(
-        (categoryId: categoryId!, subcategoryId: subcategoryId!),
-      ));
+      products = ref.watch(
+        productsBySubcategoryProvider((
+          categoryId: categoryId!,
+          subcategoryId: subcategoryId!,
+        )),
+      );
     } else if (categoryId != null) {
       products = ref.watch(productsByCategoryProvider(categoryId!));
     } else {

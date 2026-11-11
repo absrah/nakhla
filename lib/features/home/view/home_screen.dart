@@ -6,7 +6,6 @@ import 'package:go_router/go_router.dart';
 import '../../../core/router/app_routes.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_palette.dart';
-import '../../../core/theme/theme_mode_notifier.dart';
 import '../../../core/widgets/state_views.dart';
 import '../../auth/view_model/session_provider.dart';
 import '../../catalog/view/widgets/deal_card.dart';
@@ -83,8 +82,7 @@ class _HomeTop extends ConsumerWidget {
         Padding(
           padding: EdgeInsets.fromLTRB(20.w, 24.w, 20.w, 0),
           child: _Banner(
-            maxDiscount:
-                dealList.isEmpty ? 0 : dealList.first.discountPercent,
+            maxDiscount: dealList.isEmpty ? 0 : dealList.first.discountPercent,
           ),
         ),
         Padding(
@@ -102,10 +100,8 @@ class _HomeTop extends ConsumerWidget {
               padding: EdgeInsets.symmetric(horizontal: 20.w),
               itemCount: list.length,
               separatorBuilder: (_, _) => SizedBox(width: 12.w),
-              itemBuilder: (context, i) => _CategoryCircle(
-                id: list[i].id,
-                name: list[i].name,
-              ),
+              itemBuilder: (context, i) =>
+                  _CategoryCircle(id: list[i].id, name: list[i].name),
             ),
           ),
           loading: () => SizedBox(height: 112.w, child: const LoadingView()),
@@ -149,7 +145,6 @@ class _Header extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final p = context.palette;
     final isGuest = ref.watch(authStateProvider).value == null;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Row(
       children: [
@@ -161,7 +156,11 @@ class _Header extends ConsumerWidget {
             color: p.accent,
             borderRadius: BorderRadius.circular(11.r),
           ),
-          child: Icon(Icons.shopping_bag_outlined, size: 20.w, color: p.onAccent),
+          child: Icon(
+            Icons.shopping_bag_outlined,
+            size: 20.w,
+            color: p.onAccent,
+          ),
         ),
         SizedBox(width: 8.w),
         Text(
@@ -173,13 +172,6 @@ class _Header extends ConsumerWidget {
           ),
         ),
         const Spacer(),
-        // TEMPORARY until the theme switch moves to Account (Phase 4).
-        IconButton(
-          tooltip: 'Switch light / dark',
-          icon: Icon(isDark ? Icons.light_mode : Icons.dark_mode),
-          onPressed: () => themeModeNotifier.value =
-              isDark ? ThemeMode.light : ThemeMode.dark,
-        ),
         if (isGuest)
           TextButton(
             // go, not push: the router must see the log in screen.
@@ -225,7 +217,10 @@ class _Banner extends StatelessWidget {
             child: Container(
               width: 160.w,
               height: 160.w,
-              decoration: BoxDecoration(color: p.accent, shape: BoxShape.circle),
+              decoration: BoxDecoration(
+                color: p.accent,
+                shape: BoxShape.circle,
+              ),
             ),
           ),
           Padding(

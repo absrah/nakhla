@@ -11,8 +11,7 @@ AppException authExceptionFrom(FirebaseAuthException e) {
     // and an unknown email, so we do not say which one it was.
     'invalid-credential' ||
     'wrong-password' ||
-    'user-not-found' =>
-      'Incorrect email or password.',
+    'user-not-found' => 'Incorrect email or password.',
     'user-disabled' => 'This account has been disabled.',
     'email-already-in-use' => 'An account with this email already exists.',
     'weak-password' => 'Choose a stronger password (at least 6 characters).',
