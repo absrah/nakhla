@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../features/cart/view_model/cart_providers.dart';
 
-/// The frame around the five main tabs: it shows the current tab and the
+/// The frame around the four main tabs: it shows the current tab and the
 /// bottom navigation bar. Log in, sign up, onboarding and splash are outside
 /// it, so they have no bar.
 class MainShell extends ConsumerWidget {
@@ -49,11 +49,6 @@ class MainShell extends ConsumerWidget {
               child: const Icon(Icons.shopping_cart),
             ),
             label: 'Cart',
-          ),
-          const NavigationDestination(
-            icon: Icon(Icons.favorite_border),
-            selectedIcon: Icon(Icons.favorite),
-            label: 'Wishlist',
           ),
           const NavigationDestination(
             icon: Icon(Icons.person_outline),

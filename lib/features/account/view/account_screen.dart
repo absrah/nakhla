@@ -74,6 +74,12 @@ class AccountScreen extends ConsumerWidget {
           ),
           SizedBox(height: 10.w),
           _MenuTile(
+            icon: Icons.favorite_border,
+            label: 'My wishlist',
+            onTap: () => context.push(AppRoutes.wishlist),
+          ),
+          SizedBox(height: 10.w),
+          _MenuTile(
             icon: Icons.location_on_outlined,
             label: 'My addresses',
             onTap: () => context.push(AppRoutes.addresses),

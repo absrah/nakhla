@@ -39,8 +39,9 @@ class AddressFormScreen extends ConsumerWidget {
             ),
             data: (list) {
               for (final address in list) {
-                if (address.id == addressId)
+                if (address.id == addressId) {
                   return _AddressForm(existing: address);
+                }
               }
               return const EmptyView(
                 icon: Icons.location_off_outlined,

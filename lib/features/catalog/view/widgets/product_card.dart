@@ -10,6 +10,7 @@ import '../../../cart/view/add_to_cart.dart';
 import '../../model/product.dart';
 import 'product_image.dart';
 import '../../../cart/view_model/cart_providers.dart';
+import '../../../wishlist/view/wishlist_button.dart';
 
 /// Product card for the 2-column grids: image, name, rating, price and the
 /// lime "Add to cart" button. Tapping the card opens the product.
@@ -38,7 +39,17 @@ class ProductCard extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ProductImage(product: product),
+          Stack(
+            children: [
+              ProductImage(product: product),
+              // Top corner: the sale tag sits on the other side.
+              PositionedDirectional(
+                top: 8.w,
+                end: 8.w,
+                child: WishlistButton(product: product),
+              ),
+            ],
+          ),
           SizedBox(height: 8.w),
           SizedBox(
             height: 40.w,

@@ -6,11 +6,10 @@ abstract final class AppRoutes {
   static const signUp = '/signup';
   static const forgotPassword = '/forgot-password';
 
-  // The five tabs of the bottom navigation bar.
+  // The four tabs of the bottom navigation bar.
   static const home = '/home';
   static const categories = '/categories';
   static const cart = '/cart';
-  static const wishlist = '/wishlist';
   static const account = '/account';
 
   // Screens opened on top of the tabs (no bottom bar).
@@ -30,6 +29,7 @@ abstract final class AppRoutes {
   static const orderPlaced = '/order-placed/:id';
   static String orderPlacedPath(String id) => '$orderPlacedBase/$id';
   static const orders = '/orders';
+  static const wishlist = '/wishlist';
   static const editProfile = '/account/edit';
   static const orderDetail = '/orders/:id';
   static String orderPath(String id) => '/orders/$id';

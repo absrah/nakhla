@@ -14,8 +14,9 @@ class AddressViewModel {
 
   String _uid() {
     final user = _ref.read(authStateProvider).value;
-    if (user == null)
+    if (user == null) {
       throw const AppException('Log in to manage your addresses.');
+    }
     return user.uid;
   }
 

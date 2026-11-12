@@ -14,6 +14,7 @@ import '../model/product.dart';
 import '../view_model/catalog_providers.dart';
 import 'widgets/product_image.dart';
 import 'widgets/rating_stars.dart';
+import '../../wishlist/view/wishlist_button.dart';
 
 /// One product: picture, price, stock, quantity and the Add to cart bar.
 class ProductDetailScreen extends ConsumerStatefulWidget {
@@ -52,6 +53,13 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
           tooltip: 'Back',
           onPressed: _back,
         ),
+        actions: [
+          if (product.value != null)
+            Padding(
+              padding: EdgeInsetsDirectional.only(end: 12.w),
+              child: WishlistButton(product: product.value!, size: 40),
+            ),
+        ],
       ),
       body: product.when(
         loading: () => const LoadingView(),

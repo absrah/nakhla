@@ -167,6 +167,10 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const OrdersScreen(),
       ),
       GoRoute(
+        path: AppRoutes.wishlist,
+        builder: (context, state) => const WishlistScreen(),
+      ),
+      GoRoute(
         path: AppRoutes.editProfile,
         builder: (context, state) => const EditProfileScreen(),
       ),
@@ -213,14 +217,6 @@ final routerProvider = Provider<GoRouter>((ref) {
               GoRoute(
                 path: AppRoutes.cart,
                 builder: (context, state) => const CartScreen(),
-              ),
-            ],
-          ),
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
-                path: AppRoutes.wishlist,
-                builder: (context, state) => const WishlistScreen(),
               ),
             ],
           ),
