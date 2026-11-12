@@ -7,6 +7,7 @@ import '../../../../core/theme/app_palette.dart';
 import '../../../../core/utils/formatters.dart';
 import '../../model/product.dart';
 import 'product_image.dart';
+import '../../../wishlist/view/wishlist_button.dart';
 
 /// Smaller card for the horizontal "Deals" row on Home (no button).
 class DealCard extends StatelessWidget {
@@ -30,7 +31,16 @@ class DealCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ProductImage(product: product, height: 150.w),
+            Stack(
+              children: [
+                ProductImage(product: product, height: 150.w),
+                PositionedDirectional(
+                  top: 8.w,
+                  end: 8.w,
+                  child: WishlistButton(product: product, size: 32),
+                ),
+              ],
+            ),
             SizedBox(height: 8.w),
             SizedBox(
               height: 40.w,

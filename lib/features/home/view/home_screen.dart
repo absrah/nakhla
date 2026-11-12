@@ -156,11 +156,7 @@ class _Header extends ConsumerWidget {
             color: p.accent,
             borderRadius: BorderRadius.circular(11.r),
           ),
-          child: Icon(
-            Icons.shopping_bag_outlined,
-            size: 20.w,
-            color: p.onAccent,
-          ),
+          child: Icon(Icons.shopping_bag_outlined, size: 20.w, color: p.onAccent),
         ),
         SizedBox(width: 8.w),
         Text(
@@ -172,9 +168,19 @@ class _Header extends ConsumerWidget {
           ),
         ),
         const Spacer(),
+        // Shortcut to the wishlist. A guest has to log in first (go, not
+        // push: the router must see the log in screen), then comes back.
+        IconButton(
+          tooltip: 'Wishlist',
+          icon: const Icon(Icons.favorite_border),
+          onPressed: () => isGuest
+              ? context.go(
+                  '${AppRoutes.login}?from=${Uri.encodeComponent(AppRoutes.wishlist)}',
+                )
+              : context.push(AppRoutes.wishlist),
+        ),
         if (isGuest)
           TextButton(
-            // go, not push: the router must see the log in screen.
             onPressed: () => context.go(AppRoutes.login),
             child: const Text('Log in'),
           ),
