@@ -156,7 +156,11 @@ class _Header extends ConsumerWidget {
             color: p.accent,
             borderRadius: BorderRadius.circular(11.r),
           ),
-          child: Icon(Icons.shopping_bag_outlined, size: 20.w, color: p.onAccent),
+          child: Icon(
+            Icons.shopping_bag_outlined,
+            size: 20.w,
+            color: p.onAccent,
+          ),
         ),
         SizedBox(width: 8.w),
         Text(
